@@ -7,7 +7,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import ro.iteahome.nhs.adminui.config.RestUrlConfig;
 import ro.iteahome.nhs.adminui.exception.business.GlobalNotFoundException;
 import ro.iteahome.nhs.adminui.model.dto.RoleCreationDTO;
 import ro.iteahome.nhs.adminui.model.dto.RoleDTO;
@@ -27,7 +26,7 @@ public class RoleService {
 
     private final String CREDENTIALS = "NHS_ADMIN_UI:P@ssW0rd!";
     private final String ENCODED_CREDENTIALS = new String(Base64.getEncoder().encode(CREDENTIALS.getBytes()));
-    private final String ROLES_URL = "http://" + RestUrlConfig.SERVER_ROOT_URL + "/roles";
+    private final String ROLES_URL = "https://nhsbackendstage.myserverapps.com/roles";
 
 // AUTHENTICATION FOR REST REQUESTS: -----------------------------------------------------------------------------------
 

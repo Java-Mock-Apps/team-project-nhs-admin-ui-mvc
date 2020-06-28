@@ -1,5 +1,6 @@
 package ro.iteahome.nhs.adminui.service;
 
+import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -7,7 +8,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import ro.iteahome.nhs.adminui.config.RestUrlConfig;
 import ro.iteahome.nhs.adminui.exception.business.GlobalNotFoundException;
 import ro.iteahome.nhs.adminui.model.entity.Doctor;
 
@@ -24,7 +24,8 @@ public class DoctorService {
 
     private final String CREDENTIALS = "NHS_ADMIN_UI:P@ssW0rd!";
     private final String ENCODED_CREDENTIALS = new String(Base64.getEncoder().encode(CREDENTIALS.getBytes()));
-    private final String DOCTORS_URL = "http://" + RestUrlConfig.SERVER_ROOT_URL + "/doctors";
+    private final String DOCTORS_URL = "https://nhsbackendstage.myserverapps.com/doctors";
+    //private final String DOCTORS_URL = "http://localhost:8081/doctors";
 
 
 // AUTHENTICATION FOR REST REQUESTS: -----------------------------------------------------------------------------------
