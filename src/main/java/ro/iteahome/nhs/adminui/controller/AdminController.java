@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
+import ro.iteahome.nhs.adminui.exception.business.GlobalNotFoundException;
 import ro.iteahome.nhs.adminui.model.dto.AdminCreationDTO;
 import ro.iteahome.nhs.adminui.model.dto.AdminDTO;
 import ro.iteahome.nhs.adminui.model.entity.Admin;
@@ -44,7 +45,9 @@ public class AdminController {
     }
 
     @GetMapping("/get-form")
-    public String showGetForm(AdminDTO adminDTO) { return "admin/get-form"; }
+    public String showGetForm(AdminDTO adminDTO) {
+        return "admin/get-form";
+    }
 
     @GetMapping("/update-search-form")
     public String showUpdateSearchForm(AdminDTO adminDTO) {
@@ -68,8 +71,12 @@ public class AdminController {
 
     @GetMapping("/by-id")
     public ModelAndView getById(AdminDTO adminDTO) {
-        AdminDTO databaseAdminDTO = adminService.findById(adminDTO.getId());
-        return new ModelAndView("admin/home-admin").addObject(databaseAdminDTO);
+        try {
+            AdminDTO databaseAdminDTO = adminService.findById(adminDTO.getId());
+            return new ModelAndView("admin/home-admin").addObject(databaseAdminDTO);
+        } catch (Exception ex) {
+            return new ModelAndView("admin/get-form").addObject("errorMessage", ex.getMessage());
+        }
     }
 
     @GetMapping("/by-email")
@@ -91,13 +98,13 @@ public class AdminController {
     }
 
     @PostMapping("/updated-admin")
-    public ModelAndView update(@Valid Admin admin) {
+    public ModelAndView update(@Valid Admin admin) throws Exception {
         AdminDTO adminDTO = adminService.update(admin);
         return new ModelAndView("admin/home-admin").addObject(adminDTO);
     }
 
     @PostMapping("/delete-by-id")
-    public ModelAndView deleteById(AdminDTO adminDTO) {
+    public ModelAndView deleteById(AdminDTO adminDTO) throws Exception {
         AdminDTO targetAdminDTO = adminService.findById(adminDTO.getId());
         adminService.deleteById(adminDTO.getId());
         return new ModelAndView("admin/home-admin").addObject(targetAdminDTO);

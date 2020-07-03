@@ -34,13 +34,13 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
 //        return new ResponseEntity<>(new GlobalError(ex.getRestEntity().substring(0, 3) + "-01", ex.getMessage()), HttpStatus.NOT_FOUND);
 //    }
 
-    @ExceptionHandler(GlobalNotFoundException.class)
-    public ModelAndView handleGlobalNotFoundException(HttpServletRequest req, GlobalNotFoundException ex) {
-        ModelAndView globalNotFoundMV = new ModelAndView("error/not-found");
-        globalNotFoundMV.addObject("message", ex.getMessage());
-        globalNotFoundMV.addObject("url", req.getRequestURL());
-        return globalNotFoundMV;
-    }
+//    @ExceptionHandler(GlobalNotFoundException.class)
+//    public ModelAndView handleGlobalNotFoundException(HttpServletRequest req, GlobalNotFoundException ex) {
+//        ModelAndView globalNotFoundMV = new ModelAndView("error/not-found");
+//        globalNotFoundMV.addObject("notFound", ex.getMessage());
+//        globalNotFoundMV.addObject("url", req.getRequestURL());
+//        return globalNotFoundMV;
+//    }
 
 //    @ExceptionHandler(GlobalAlreadyExistsException.class)
 //    public ResponseEntity<GlobalError> handleGlobalAlreadyExistsException(GlobalAlreadyExistsException ex) {
