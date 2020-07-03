@@ -103,22 +103,4 @@ public class RoleController {
         RoleDTO targetRoleDTO = roleService.deleteByName(roleDTO.getName());
         return new ModelAndView("role/home-role").addObject(targetRoleDTO);
     }
-
-// OTHER METHODS: ------------------------------------------------------------------------------------------------------
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new LinkedHashMap<>();
-        errors.put("errorCode", "ROL-00");
-        errors.put("errorMessage", "ROLE FIELDS HAVE VALIDATION ERRORS.");
-        errors.putAll(ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .collect(Collectors.toMap(
-                        FieldError::getField,
-                        FieldError::getDefaultMessage)));
-        return new ResponseEntity<>(
-                errors,
-                HttpStatus.BAD_REQUEST);
-    }
 }

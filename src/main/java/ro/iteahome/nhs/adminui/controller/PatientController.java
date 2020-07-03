@@ -27,8 +27,6 @@ public class PatientController {
 
 // LINK "GET" REQUESTS: ------------------------------------------------------------------------------------------------
 
-
-
     @GetMapping("/add-form")
     public ModelAndView showAddForm(Patient patient) {
         return new ModelAndView("patient/add-form");
@@ -57,13 +55,11 @@ public class PatientController {
         return new ModelAndView("patient/home-patient").addObject(databasePatient);
     }
 
-
     @GetMapping("/by-cnp")
     public ModelAndView getByCnp( Patient patient) {
         Patient databasePatient = patientService.findByCnp(patient.getCnp());
         return new ModelAndView("patient/home-patient").addObject(databasePatient);
     }
-
 
     @GetMapping("/update-form-by-cnp")
     public ModelAndView showUpdateFormByCnp(Patient patient) {
@@ -77,12 +73,10 @@ public class PatientController {
         return new ModelAndView("patient/home-patient").addObject(databasePatient);
     }
 
-
     @PostMapping("/delete-by-cnp")
     public ModelAndView deleteByCnp(Patient patient) {
         Patient databasePatient = patientService.findByCnp(patient.getCnp());
         patientService.deleteByCnp(databasePatient.getCnp());
         return new ModelAndView("patient/home-patient").addObject(databasePatient);
     }
-
 }

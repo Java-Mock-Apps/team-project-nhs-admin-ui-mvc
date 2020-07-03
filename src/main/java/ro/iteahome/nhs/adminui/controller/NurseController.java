@@ -64,7 +64,6 @@ public class NurseController {
         return new ModelAndView("nurse/home-nurse").addObject(databaseNurse);
     }
 
-
     @GetMapping("/update-form-by-cnp")
     public ModelAndView showUpdateFormByCnp(Nurse nurse) {
         String[] nurseSpecialties =  nurseService.getSpecialties();
@@ -87,5 +86,4 @@ public class NurseController {
         nurseService.deleteByCnp(databaseNurse.getCnp());
         return new ModelAndView("nurse/home-nurse").addObject(databaseNurse);
     }
-
 }
