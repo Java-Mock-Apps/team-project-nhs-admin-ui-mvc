@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 import ro.iteahome.nhs.adminui.config.rest.RestConfig;
 import ro.iteahome.nhs.adminui.exception.business.GlobalAlreadyExistsException;
@@ -55,17 +56,31 @@ public class AdminService implements UserDetailsService {
         }
     }
 
+//    public AdminDTO findById(int id) {
+//        ResponseEntity<AdminDTO> responseAdminDTO =
+//                restTemplate.exchange(
+//                        restConfig.getSERVER_URL() + restConfig.getADMINS_URI() + "/by-id/" + id,
+//                        HttpMethod.GET,
+//                        new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+//                        AdminDTO.class);
+//        AdminDTO adminDTO = responseAdminDTO.getBody();
+//        if (adminDTO != null) {
+//            return adminDTO;
+//        } else {
+//            throw new GlobalNotFoundException("ADMIN");
+//        }
+//    }
+
     public AdminDTO findById(int id) {
-        ResponseEntity<AdminDTO> responseAdminDTO =
-                restTemplate.exchange(
-                        restConfig.getSERVER_URL() + restConfig.getADMINS_URI() + "/by-id/" + id,
-                        HttpMethod.GET,
-                        new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
-                        AdminDTO.class);
-        AdminDTO adminDTO = responseAdminDTO.getBody();
-        if (adminDTO != null) {
-            return adminDTO;
-        } else {
+        try {
+            ResponseEntity<AdminDTO> responseAdminDTO =
+                    restTemplate.exchange(
+                            restConfig.getSERVER_URL() + restConfig.getADMINS_URI() + "/by-id/" + id,
+                            HttpMethod.GET,
+                            new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+                            AdminDTO.class);
+            return responseAdminDTO.getBody();
+        } catch (RestClientResponseException ex) {
             throw new GlobalNotFoundException("ADMIN");
         }
     }
