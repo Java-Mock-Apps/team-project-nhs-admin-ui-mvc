@@ -19,13 +19,14 @@
     <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
     <h1 class="h3 mb-3 font-weight-normal">Get Admin form</h1>
 
+    <span th:if="${errorMessage != null}" th:text="*{errorMessage}"></span>
+    <!-- TODO: Incorporate this error message graphically, somewhere. -->
 
     <form class="form-nhs" method="GET" th:action="@{/admins/by-id}" th:object="${adminDTO}">
 
-
         <div class="form-label-group">
             <input id="id" name="id" th:field="*{id}" type="id" class="form-control"
-                   placeholder="ID" autofocus>
+            placeholder="ID" autofocus>
             <span th:errors="*{id}" th:if="${#fields.hasErrors('id')}"></span>
             <label for="id">ID</label>
         </div>
@@ -34,7 +35,6 @@
     </form>
 
     <form class="form-nhs" method="GET" th:action="@{/admins/by-email}" th:object="${adminDTO}">
-
 
         <div class="form-label-group">
             <input id="email" name="email" th:field="*{email}" type="email" class="form-control"

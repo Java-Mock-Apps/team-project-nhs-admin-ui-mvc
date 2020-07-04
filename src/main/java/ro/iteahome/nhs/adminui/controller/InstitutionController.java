@@ -24,8 +24,6 @@ public class InstitutionController {
 
 // LINK "GET" REQUESTS: ------------------------------------------------------------------------------------------------
 
-
-
     @GetMapping("/add-form")
     public ModelAndView showAddForm(Institution institution) {
         String[] institutionTypes =  institutionService.getInstitutionTypes();
@@ -55,13 +53,11 @@ public class InstitutionController {
         return new ModelAndView("institution/home-institution").addObject(databaseInstitution);
     }
 
-
     @GetMapping("/by-cui")
     public ModelAndView getByCui( Institution institution) {
         Institution databaseInstitution = institutionService.findByCui(institution.getCui());
         return new ModelAndView("institution/home-institution").addObject(databaseInstitution);
     }
-
 
     @GetMapping("/update-form-by-cui")
     public ModelAndView showUpdateFormByCui(Institution institution) {
@@ -77,12 +73,10 @@ public class InstitutionController {
         return new ModelAndView("institution/home-institution").addObject(databaseInstitution);
     }
 
-
     @PostMapping("/delete-by-cui")
     public ModelAndView deleteByCui(Institution institution) {
         Institution databaseInstitution = institutionService.findByCui(institution.getCui());
         institutionService.deleteByCui(institution.getCui());
         return new ModelAndView("institution/home-institution").addObject(databaseInstitution);
     }
-
 }

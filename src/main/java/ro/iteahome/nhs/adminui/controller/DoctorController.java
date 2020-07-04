@@ -25,8 +25,6 @@ public class DoctorController {
 
 // LINK "GET" REQUESTS: ------------------------------------------------------------------------------------------------
 
-
-
     @GetMapping("/add-form")
     public ModelAndView showAddForm(Doctor doctor) {
         String[] doctorSpecialties = doctorService.getSpecialties();
@@ -88,5 +86,4 @@ public class DoctorController {
 
         return new ModelAndView("doctor/home-doctor").addObject(databaseDoctor);
     }
-
 }

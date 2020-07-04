@@ -2,6 +2,7 @@ package ro.iteahome.nhs.adminui.controller;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
+import ro.iteahome.nhs.adminui.exception.business.GlobalNotFoundException;
 import ro.iteahome.nhs.adminui.model.dto.AdminCreationDTO;
 import ro.iteahome.nhs.adminui.model.dto.AdminDTO;
 import ro.iteahome.nhs.adminui.model.entity.Admin;
@@ -42,7 +45,9 @@ public class AdminController {
     }
 
     @GetMapping("/get-form")
-    public String showGetForm(AdminDTO adminDTO) { return "admin/get-form"; }
+    public String showGetForm(AdminDTO adminDTO) {
+        return "admin/get-form";
+    }
 
     @GetMapping("/update-search-form")
     public String showUpdateSearchForm(AdminDTO adminDTO) {
@@ -66,8 +71,12 @@ public class AdminController {
 
     @GetMapping("/by-id")
     public ModelAndView getById(AdminDTO adminDTO) {
-        AdminDTO databaseAdminDTO = adminService.findById(adminDTO.getId());
-        return new ModelAndView("admin/home-admin").addObject(databaseAdminDTO);
+        try {
+            AdminDTO databaseAdminDTO = adminService.findById(adminDTO.getId());
+            return new ModelAndView("admin/home-admin").addObject(databaseAdminDTO);
+        } catch (Exception ex) {
+            return new ModelAndView("admin/get-form").addObject("errorMessage", ex.getMessage());
+        }
     }
 
     @GetMapping("/by-email")
@@ -89,13 +98,13 @@ public class AdminController {
     }
 
     @PostMapping("/updated-admin")
-    public ModelAndView update(@Valid Admin admin) {
+    public ModelAndView update(@Valid Admin admin) throws Exception {
         AdminDTO adminDTO = adminService.update(admin);
         return new ModelAndView("admin/home-admin").addObject(adminDTO);
     }
 
     @PostMapping("/delete-by-id")
-    public ModelAndView deleteById(AdminDTO adminDTO) {
+    public ModelAndView deleteById(AdminDTO adminDTO) throws Exception {
         AdminDTO targetAdminDTO = adminService.findById(adminDTO.getId());
         adminService.deleteById(adminDTO.getId());
         return new ModelAndView("admin/home-admin").addObject(targetAdminDTO);
@@ -106,23 +115,5 @@ public class AdminController {
         AdminDTO targetAdminDTO = adminService.findByEmail(adminDTO.getEmail());
         adminService.deleteByEmail(adminDTO.getEmail());
         return new ModelAndView("admin/home-admin").addObject(targetAdminDTO);
-    }
-
-// OTHER METHODS: ------------------------------------------------------------------------------------------------------
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new LinkedHashMap<>();
-        errors.put("errorCode", "ADM-00");
-        errors.put("errorMessage", "ADMIN FIELDS HAVE VALIDATION ERRORS.");
-        errors.putAll(ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .collect(Collectors.toMap(
-                        FieldError::getField,
-                        FieldError::getDefaultMessage)));
-        return new ResponseEntity<>(
-                errors,
-                HttpStatus.BAD_REQUEST);
     }
 }

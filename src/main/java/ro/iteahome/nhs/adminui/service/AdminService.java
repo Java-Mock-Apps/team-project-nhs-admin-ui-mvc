@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 import ro.iteahome.nhs.adminui.config.rest.RestConfig;
 import ro.iteahome.nhs.adminui.exception.business.GlobalAlreadyExistsException;
@@ -55,18 +56,17 @@ public class AdminService implements UserDetailsService {
         }
     }
 
-    public AdminDTO findById(int id) {
-        ResponseEntity<AdminDTO> responseAdminDTO =
-                restTemplate.exchange(
-                        restConfig.getSERVER_URL() + restConfig.getADMINS_URI() + "/by-id/" + id,
-                        HttpMethod.GET,
-                        new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
-                        AdminDTO.class);
-        AdminDTO adminDTO = responseAdminDTO.getBody();
-        if (adminDTO != null) {
-            return adminDTO;
-        } else {
-            throw new GlobalNotFoundException("ADMIN");
+    public AdminDTO findById(int id) throws Exception {
+        try {
+            ResponseEntity<AdminDTO> responseAdminDTO =
+                    restTemplate.exchange(
+                            restConfig.getSERVER_URL() + restConfig.getADMINS_URI() + "/by-id/" + id,
+                            HttpMethod.GET,
+                            new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+                            AdminDTO.class);
+            return responseAdminDTO.getBody();
+        } catch (RestClientResponseException ex) {
+            throw new Exception(ex.getMessage().substring(7, ex.getMessage().length() - 1));
         }
     }
 
@@ -115,7 +115,7 @@ public class AdminService implements UserDetailsService {
         }
     }
 
-    public AdminDTO update(Admin admin) {
+    public AdminDTO update(Admin admin) throws Exception {
         AdminDTO adminDTO = findById(admin.getId());
         if (adminDTO != null) {
             return restTemplate.exchange(
@@ -128,7 +128,7 @@ public class AdminService implements UserDetailsService {
         }
     }
 
-    public AdminDTO deleteById(int id) {
+    public AdminDTO deleteById(int id) throws Exception {
         AdminDTO adminDTO = findById(id);
         if (adminDTO != null) {
             ResponseEntity<AdminDTO> responseAdminDTO =
