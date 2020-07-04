@@ -23,7 +23,7 @@
 
 
         <div class="form-label-group">
-            <input id="id" name="id" th:field="*{id}" type="id" class="form-control"
+            <input id="id" name="id" th:field="*{id}" type="number" class="form-control"
                    placeholder="Role ID" autofocus>
             <span th:errors="*{id}" th:if="${#fields.hasErrors('id')}"></span>
             <label for="id">Role ID</label>

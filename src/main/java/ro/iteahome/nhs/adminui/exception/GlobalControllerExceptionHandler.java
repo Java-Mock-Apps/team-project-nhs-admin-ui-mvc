@@ -14,6 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
+//    @ExceptionHandler(Exception.class)
+//    public ModelAndView handleException(Exception ex) {
+//        return new ModelAndView("error/test-error").addObject("errorMessage", ex.getMessage());
+//    }
+
 //    public static final String DEFAULT_ERROR_VIEW = "error";
 //
 //    @ExceptionHandler(Exception.class)

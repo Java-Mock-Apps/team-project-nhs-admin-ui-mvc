@@ -1,5 +1,6 @@
 package ro.iteahome.nhs.adminui.service;
 
+import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -10,11 +11,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientResponseException;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import ro.iteahome.nhs.adminui.config.rest.RestConfig;
 import ro.iteahome.nhs.adminui.exception.business.GlobalAlreadyExistsException;
 import ro.iteahome.nhs.adminui.exception.business.GlobalNotFoundException;
+import ro.iteahome.nhs.adminui.exception.technical.GlobalRequestFailedException;
 import ro.iteahome.nhs.adminui.model.dto.AdminCreationDTO;
 import ro.iteahome.nhs.adminui.model.dto.AdminDTO;
 import ro.iteahome.nhs.adminui.model.entity.Admin;
@@ -38,6 +41,9 @@ public class AdminService implements UserDetailsService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private Logger logger;
+
 // C.R.U.D. METHODS: ---------------------------------------------------------------------------------------------------
 
     public AdminDTO add(AdminCreationDTO adminCreationDTO) {
@@ -56,7 +62,7 @@ public class AdminService implements UserDetailsService {
         }
     }
 
-    public AdminDTO findById(int id) throws Exception {
+    public AdminDTO findById(int id) throws GlobalNotFoundException, GlobalRequestFailedException {
         try {
             ResponseEntity<AdminDTO> responseAdminDTO =
                     restTemplate.exchange(
@@ -65,8 +71,13 @@ public class AdminService implements UserDetailsService {
                             new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
                             AdminDTO.class);
             return responseAdminDTO.getBody();
-        } catch (RestClientResponseException ex) {
-            throw new Exception(ex.getMessage().substring(7, ex.getMessage().length() - 1));
+        } catch (RestClientException ex) {
+            if (ex instanceof HttpClientErrorException.NotFound) {
+                throw new GlobalNotFoundException("ADMIN");
+            } else {
+                logger.warn("REST EXCEPTION FOR ADMIN: " + ex.getMessage());
+                throw new GlobalRequestFailedException("ADMIN");
+            }
         }
     }
 

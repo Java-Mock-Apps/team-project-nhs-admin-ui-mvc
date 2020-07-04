@@ -25,8 +25,9 @@
     <form class="form-nhs" method="GET" th:action="@{/admins/by-id}" th:object="${adminDTO}">
 
         <div class="form-label-group">
-            <input id="id" name="id" th:field="*{id}" type="id" class="form-control"
+            <input id="id" name="id" th:field="*{id}" type="number" class="form-control"
             placeholder="ID" autofocus>
+            <!-- TODO: Try to remove number scroll bar. -->
             <span th:errors="*{id}" th:if="${#fields.hasErrors('id')}"></span>
             <label for="id">ID</label>
         </div>
