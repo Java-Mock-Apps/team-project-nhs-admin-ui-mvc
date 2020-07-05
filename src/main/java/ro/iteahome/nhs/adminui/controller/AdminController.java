@@ -2,28 +2,20 @@ package ro.iteahome.nhs.adminui.controller;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
-import ro.iteahome.nhs.adminui.exception.business.GlobalNotFoundException;
-import ro.iteahome.nhs.adminui.model.form.AdminCreationForm;
 import ro.iteahome.nhs.adminui.model.dto.AdminDTO;
 import ro.iteahome.nhs.adminui.model.entity.Admin;
+import ro.iteahome.nhs.adminui.model.form.AdminCreationForm;
+import ro.iteahome.nhs.adminui.model.form.AdminEmailForm;
 import ro.iteahome.nhs.adminui.service.AdminService;
 
 import javax.validation.Valid;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admins")
@@ -45,7 +37,7 @@ public class AdminController {
     }
 
     @GetMapping("/get-form")
-    public String showGetForm(AdminDTO adminDTO) {
+    public String showGetForm(AdminEmailForm adminEmailForm) {
         return "admin/get-form";
     }
 
@@ -69,31 +61,40 @@ public class AdminController {
         return new ModelAndView("admin/home-admin").addObject(adminDTO);
     }
 
-    @GetMapping("/by-id")
-    public ModelAndView getById(AdminDTO adminDTO) {
-        try {
-            AdminDTO databaseAdminDTO = adminService.findById(adminDTO.getId());
-            return new ModelAndView("admin/home-admin").addObject(databaseAdminDTO);
-        } catch (Exception ex) {
-            return new ModelAndView("admin/get-form").addObject("errorMessage", ex.getMessage());
+//    @GetMapping("/by-id")
+//    public ModelAndView getById(@Valid AdminIdForm adminIdForm) {
+//        try {
+//            AdminDTO databaseAdminDTO = adminService.findById(adminIdForm.getId());
+//            return new ModelAndView("admin/home-admin").addObject(databaseAdminDTO);
+//        } catch (Exception ex) {
+//            return new ModelAndView("admin/get-form").addObject("errorMessage", ex.getMessage());
+//        }
+//    }
+
+    @GetMapping("/by-email")
+    public String getByEmail(@Valid AdminEmailForm adminEmailForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "admin/get-form";
+        } else {
+            try {
+                model.addAttribute(adminService.findByEmail(adminEmailForm.getEmail()));
+                return "admin/home-admin";
+            } catch (Exception ex) {
+                model.addAttribute("errorMessage", ex.getMessage());
+                return "admin/get-form";
+            }
         }
     }
 
-    @GetMapping("/by-email")
-    public ModelAndView getByEmail(AdminDTO adminDTO) {
-        AdminDTO databaseAdminDTO = adminService.findByEmail(adminDTO.getEmail());
-        return new ModelAndView("admin/home-admin").addObject(databaseAdminDTO);
-    }
-
-    @PostMapping("/update-form-by-id")
-    public ModelAndView showUpdateFormById(AdminDTO adminDTO) {
-        Admin admin = adminService.findSensitiveById(adminDTO.getId());
-        return new ModelAndView("admin/update-form").addObject(admin);
-    }
+//    @PostMapping("/update-form-by-id")
+//    public ModelAndView showUpdateFormById(AdminIdForm adminIdForm) {
+//        Admin admin = adminService.findSensitiveById(adminIdForm.getId());
+//        return new ModelAndView("admin/update-form").addObject(admin);
+//    }
 
     @PostMapping("/update-form-by-email")
-    public ModelAndView showUpdateFormByEmail(AdminDTO adminDTO) {
-        Admin admin = adminService.findSensitiveByEmail(adminDTO.getEmail());
+    public ModelAndView showUpdateFormByEmail(AdminEmailForm adminEmailForm) {
+        Admin admin = adminService.findSensitiveByEmail(adminEmailForm.getEmail());
         return new ModelAndView("admin/update-form").addObject(admin);
     }
 
@@ -103,12 +104,12 @@ public class AdminController {
         return new ModelAndView("admin/home-admin").addObject(adminDTO);
     }
 
-    @PostMapping("/delete-by-id")
-    public ModelAndView deleteById(AdminDTO adminDTO) throws Exception {
-        AdminDTO targetAdminDTO = adminService.findById(adminDTO.getId());
-        adminService.deleteById(adminDTO.getId());
-        return new ModelAndView("admin/home-admin").addObject(targetAdminDTO);
-    }
+//    @PostMapping("/delete-by-id")
+//    public ModelAndView deleteById(AdminDTO adminDTO) throws Exception {
+//        AdminDTO targetAdminDTO = adminService.findById(adminDTO.getId());
+//        adminService.deleteById(adminDTO.getId());
+//        return new ModelAndView("admin/home-admin").addObject(targetAdminDTO);
+//    }
 
     @PostMapping("/delete-by-email")
     public ModelAndView deleteByEmail(AdminDTO adminDTO) {
