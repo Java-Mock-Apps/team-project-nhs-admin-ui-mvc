@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import ro.iteahome.nhs.adminui.exception.business.GlobalNotFoundException;
-import ro.iteahome.nhs.adminui.model.dto.AdminCreationDTO;
+import ro.iteahome.nhs.adminui.model.form.AdminCreationForm;
 import ro.iteahome.nhs.adminui.model.dto.AdminDTO;
 import ro.iteahome.nhs.adminui.model.entity.Admin;
 import ro.iteahome.nhs.adminui.service.AdminService;
@@ -40,7 +40,7 @@ public class AdminController {
 // LINK "GET" REQUESTS: ------------------------------------------------------------------------------------------------
 
     @GetMapping("/add-form")
-    public String showAddForm(AdminCreationDTO adminCreationDTO) {
+    public String showAddForm(AdminCreationForm adminCreationForm) {
         return "admin/add-form";
     }
 
@@ -64,8 +64,8 @@ public class AdminController {
     // TODO: Incorporate exception handling. Leaving form fields empty is an issue.
 
     @PostMapping
-    public ModelAndView add(@Valid AdminCreationDTO adminCreationDTO) {
-        AdminDTO adminDTO = adminService.add(adminCreationDTO);
+    public ModelAndView add(@Valid AdminCreationForm adminCreationForm) {
+        AdminDTO adminDTO = adminService.add(adminCreationForm);
         return new ModelAndView("admin/home-admin").addObject(adminDTO);
     }
 

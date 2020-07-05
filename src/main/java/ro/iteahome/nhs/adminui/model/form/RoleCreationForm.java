@@ -1,8 +1,8 @@
-package ro.iteahome.nhs.adminui.model.dto;
+package ro.iteahome.nhs.adminui.model.form;
 
 import javax.validation.constraints.NotNull;
 
-public class RoleCreationDTO {
+public class RoleCreationForm {
 
 // FIELDS: -------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +13,7 @@ public class RoleCreationDTO {
 
 // METHODS: ------------------------------------------------------------------------------------------------------------
 
-    public RoleCreationDTO() {
+    public RoleCreationForm() {
     }
 
     public String getName() {

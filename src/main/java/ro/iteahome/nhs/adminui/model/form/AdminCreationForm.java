@@ -1,10 +1,10 @@
-package ro.iteahome.nhs.adminui.model.dto;
+package ro.iteahome.nhs.adminui.model.form;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-public class AdminCreationDTO {
+public class AdminCreationForm {
 
 // FIELDS: -------------------------------------------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ public class AdminCreationDTO {
 
 // METHODS: ------------------------------------------------------------------------------------------------------------
 
-    public AdminCreationDTO() {
+    public AdminCreationForm() {
     }
 
     public String getEmail() {

@@ -9,7 +9,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import ro.iteahome.nhs.adminui.model.dto.RoleCreationDTO;
+import ro.iteahome.nhs.adminui.model.form.RoleCreationForm;
 import ro.iteahome.nhs.adminui.model.dto.RoleDTO;
 import ro.iteahome.nhs.adminui.model.entity.Role;
 import ro.iteahome.nhs.adminui.service.RoleService;
@@ -34,7 +34,7 @@ public class RoleController {
 // LINK "GET" REQUESTS: ------------------------------------------------------------------------------------------------
 
     @GetMapping("/add-form")
-    public String showAddForm(RoleCreationDTO roleCreationDTO) {
+    public String showAddForm(RoleCreationForm roleCreationForm) {
         return "role/add-form";
     }
 
@@ -56,8 +56,8 @@ public class RoleController {
     // TODO: Incorporate exception handling. Leaving form fields empty is an issue.
 
     @PostMapping
-    public ModelAndView add(@Valid RoleCreationDTO roleCreationDTO) {
-        RoleDTO roleDTO = roleService.add(roleCreationDTO);
+    public ModelAndView add(@Valid RoleCreationForm roleCreationForm) {
+        RoleDTO roleDTO = roleService.add(roleCreationForm);
         return new ModelAndView("role/home-role").addObject(roleDTO);
     }
 

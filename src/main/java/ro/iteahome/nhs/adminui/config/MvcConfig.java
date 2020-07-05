@@ -23,11 +23,11 @@ public class MvcConfig implements WebMvcConfigurer {
         SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
         Properties mappings = new Properties();
 
-        mappings.setProperty("DatabaseException", "databaseError"); // TODO: Figure out how to develop these examples.
-        mappings.setProperty("ValidationException", "validationError");
+//        mappings.setProperty("DatabaseException", "databaseError"); // TODO: Figure out how to develop these examples.
+//        mappings.setProperty("ValidationException", "validationError");
 
         resolver.setExceptionMappings(mappings);
-        resolver.setDefaultErrorView("error");
+        resolver.setDefaultErrorView("error/test-error");
         resolver.setWarnLogCategory("NHS ADMIN UI (TEMPORARY) LOGGER"); // TODO: Remove this after completing exception handling. Business exceptions should not be logged.
 
         return resolver;

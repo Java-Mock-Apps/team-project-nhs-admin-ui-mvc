@@ -18,7 +18,7 @@ import ro.iteahome.nhs.adminui.config.rest.RestConfig;
 import ro.iteahome.nhs.adminui.exception.business.GlobalAlreadyExistsException;
 import ro.iteahome.nhs.adminui.exception.business.GlobalNotFoundException;
 import ro.iteahome.nhs.adminui.exception.technical.GlobalRequestFailedException;
-import ro.iteahome.nhs.adminui.model.dto.AdminCreationDTO;
+import ro.iteahome.nhs.adminui.model.form.AdminCreationForm;
 import ro.iteahome.nhs.adminui.model.dto.AdminDTO;
 import ro.iteahome.nhs.adminui.model.entity.Admin;
 
@@ -46,8 +46,8 @@ public class AdminService implements UserDetailsService {
 
 // C.R.U.D. METHODS: ---------------------------------------------------------------------------------------------------
 
-    public AdminDTO add(AdminCreationDTO adminCreationDTO) {
-        Admin admin = buildAdmin(adminCreationDTO);
+    public AdminDTO add(AdminCreationForm adminCreationForm) {
+        Admin admin = buildAdmin(adminCreationForm);
         ResponseEntity<AdminDTO> responseAdminDTO =
                 restTemplate.exchange(
                         restConfig.getSERVER_URL() + restConfig.getADMINS_URI(),
@@ -185,8 +185,8 @@ public class AdminService implements UserDetailsService {
 
 // OTHER METHODS: ------------------------------------------------------------------------------------------------------
 
-    private Admin buildAdmin(AdminCreationDTO adminCreationDTO) {
-        Admin admin = modelMapper.map(adminCreationDTO, Admin.class);
+    private Admin buildAdmin(AdminCreationForm adminCreationForm) {
+        Admin admin = modelMapper.map(adminCreationForm, Admin.class);
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         admin.setStatus(1);
         admin.setRole("ADMIN");

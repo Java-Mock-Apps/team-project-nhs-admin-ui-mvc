@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ro.iteahome.nhs.adminui.config.rest.RestConfig;
 import ro.iteahome.nhs.adminui.exception.business.GlobalNotFoundException;
-import ro.iteahome.nhs.adminui.model.dto.RoleCreationDTO;
+import ro.iteahome.nhs.adminui.model.form.RoleCreationForm;
 import ro.iteahome.nhs.adminui.model.dto.RoleDTO;
 import ro.iteahome.nhs.adminui.model.entity.Role;
 
@@ -25,12 +25,12 @@ public class RoleService {
 
 // C.R.U.D. METHODS: ---------------------------------------------------------------------------------------------------
 
-    public RoleDTO add(RoleCreationDTO roleCreationDTO) {
+    public RoleDTO add(RoleCreationForm roleCreationForm) {
         ResponseEntity<RoleDTO> roleResponse =
                 restTemplate.exchange(
                         restConfig.getSERVER_URL() + restConfig.getROLES_URI(),
                         HttpMethod.POST,
-                        new HttpEntity<>(roleCreationDTO, restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+                        new HttpEntity<>(roleCreationForm, restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
                         RoleDTO.class);
         return roleResponse.getBody();
     }
