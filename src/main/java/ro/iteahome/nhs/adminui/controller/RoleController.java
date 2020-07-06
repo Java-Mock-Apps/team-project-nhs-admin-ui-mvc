@@ -3,13 +3,15 @@ package ro.iteahome.nhs.adminui.controller;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import ro.iteahome.nhs.adminui.model.dto.RoleDTO;
 import ro.iteahome.nhs.adminui.model.entity.Role;
-import ro.iteahome.nhs.adminui.model.form.RoleCreationForm;
+import ro.iteahome.nhs.adminui.model.form.RoleForm;
 import ro.iteahome.nhs.adminui.service.RoleService;
 
 import javax.validation.Valid;
@@ -29,12 +31,12 @@ public class RoleController {
 // LINK "GET" REQUESTS: ------------------------------------------------------------------------------------------------
 
     @GetMapping("/add-form")
-    public String showAddForm(RoleCreationForm roleCreationForm) {
+    public String showAddForm(RoleForm roleForm) {
         return "role/add-form";
     }
 
     @GetMapping("/get-form")
-    public String showGetForm(RoleDTO roleDTO) {
+    public String showGetForm(RoleForm roleForm) {
         return "role/get-form";
     }
 
@@ -50,30 +52,35 @@ public class RoleController {
 
 // METHODS: ------------------------------------------------------------------------------------------------------------
 
-    // TODO: Incorporate exception handling. Leaving form fields empty is an issue.
-
     @PostMapping
-    public ModelAndView add(@Valid RoleCreationForm roleCreationForm) {
-        RoleDTO roleDTO = roleService.add(roleCreationForm);
-        return new ModelAndView("role/home-role").addObject(roleDTO);
-    }
-
-    @GetMapping("/by-id")
-    public ModelAndView getById(RoleDTO roleDTO) {
-        RoleDTO databaseRoleDTO = roleService.findById(roleDTO.getId());
-        return new ModelAndView("role/home-role").addObject(databaseRoleDTO);
+    public String add(@Valid RoleForm roleForm, BindingResult bindingResult, Model model) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return "role/add-form";
+        } else {
+            try {
+                RoleDTO roleDTO = roleService.add(roleForm);
+                model.addAttribute("roleDTO", roleDTO);
+                return "role/home-role";
+            } catch (Exception ex) {
+                model.addAttribute("errorMessage", ex.getMessage());
+                return "role/add-form";
+            }
+        }
     }
 
     @GetMapping("/by-name")
-    public ModelAndView getByName(RoleDTO roleDTO) {
-        RoleDTO databaseRoleDTO = roleService.findByName(roleDTO.getName());
-        return new ModelAndView("role/home-role").addObject(databaseRoleDTO);
-    }
-
-    @GetMapping("/update-form-by-id")
-    public ModelAndView showUpdateFormById(RoleDTO roleDTO) {
-        RoleDTO foundRoleDTO = roleService.findById(roleDTO.getId());
-        return new ModelAndView("role/update-form").addObject(foundRoleDTO);
+    public String getByName(@Valid RoleForm roleForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "role/get-form";
+        } else {
+            try {
+                model.addAttribute("roleDTO", roleService.findByName(roleForm.getName()));
+                return "role/home-role";
+            } catch (Exception ex) {
+                model.addAttribute("errorMessage", ex.getMessage());
+                return "role/get-form";
+            }
+        }
     }
 
     @GetMapping("/update-form-by-name")
@@ -87,12 +94,6 @@ public class RoleController {
         Role role = modelMapper.map(foundRoleDTO, Role.class);
         RoleDTO roleDTO = roleService.update(role);
         return new ModelAndView("role/home-role").addObject(roleDTO);
-    }
-
-    @PostMapping("/deleted-role-id")
-    public ModelAndView deleteById(RoleDTO roleDTO) {
-        RoleDTO targetRoleDTO = roleService.deleteById(roleDTO.getId());
-        return new ModelAndView("role/home-role").addObject(targetRoleDTO);
     }
 
     @PostMapping("/deleted-role-name")

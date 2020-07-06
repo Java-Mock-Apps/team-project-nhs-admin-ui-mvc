@@ -6,28 +6,22 @@
         <title>NHS Sign In</title>
         <link rel="shortcut icon" type="image/png" href="../../assets/brand/n.png">
 
-
         <!-- Bootstrap core CSS -->
         <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
+
         <!-- Custom styles for this template -->
         <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
-
-
     </head>
 
     <body class="text-center">
         <br>
-
-
         <form class="form-nhs" method="POST" th:action="@{/login}">
 
             <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
-            <h1 class="h3 mb-3 font-weight-normal">NHS Sign in form</h1>
-
+            <h1 class="h3 mb-3 font-weight-normal">Welcome to the NHS Admin UI</h1>
             <br>
 
             <div th:if="${param.error}">Wrong credentials</div>
-
             <br>
 
             <div class="form-label-group">
@@ -43,15 +37,11 @@
 
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 
-
             <br><br>
             <a href="/" class="btn btn-lg btn-secondary btn-block">Go back</a>
             <br><br>
 
             <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
-
         </form>
-
-
     </body>
 </html>

@@ -1,19 +1,19 @@
 package ro.iteahome.nhs.adminui.model.form;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
-public class RoleCreationForm {
+public class RoleForm {
 
 // FIELDS: -------------------------------------------------------------------------------------------------------------
 
     // NO ID.
 
-    @NotNull
+    @NotEmpty(message = "ROLE NAME CANNOT BE EMPTY")
     private String name;
 
 // METHODS: ------------------------------------------------------------------------------------------------------------
 
-    public RoleCreationForm() {
+    public RoleForm() {
     }
 
     public String getName() {

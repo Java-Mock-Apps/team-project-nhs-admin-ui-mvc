@@ -6,18 +6,18 @@
         <title>NHS Add Role</title>
         <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
 
-
         <!-- Bootstrap core CSS -->
         <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
+
         <!-- Custom styles for this template -->
         <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
-
     </head>
 
     <body class="text-center">
+        <span th:if="${errorMessage != null}" th:text="*{errorMessage}"></span>
+        <!-- TODO: Incorporate this error message graphically, somewhere. -->
 
-
-        <form class="form-nhs" method="POST" th:action="@{/roles}" th:object="${roleCreationForm}">
+        <form class="form-nhs" method="POST" th:action="@{/roles}" th:object="${roleForm}">
 
             <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
             <h1 class="h3 mb-3 font-weight-normal">Add Role form</h1>

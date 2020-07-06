@@ -6,12 +6,11 @@
         <title>NHS Get Role</title>
         <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
 
-
         <!-- Bootstrap core CSS -->
         <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
+
         <!-- Custom styles for this template -->
         <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
-
     </head>
 
     <body class="text-center">
@@ -19,23 +18,10 @@
             <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
             <h1 class="h3 mb-3 font-weight-normal">Get Role form</h1>
 
-            <form class="form-nhs" method="GET" th:action="@{/roles/by-id}" th:object="${roleDTO}">
+            <span th:if="${errorMessage != null}" th:text="*{errorMessage}"></span>
+            <!-- TODO: Incorporate this error message graphically, somewhere. -->
 
-
-                <div class="form-label-group">
-                    <input id="id" name="id" th:field="*{id}" type="number" class="form-control"
-                           placeholder="Role ID" autofocus>
-                    <!-- TODO: Try to remove number scroll bar. If not, try to stylize it. -->
-                    <span th:errors="*{id}" th:if="${#fields.hasErrors('id')}"></span>
-                    <label for="id">Role ID</label>
-                </div>
-
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Get Role</button>
-            </form>
-
-
-            <form class="form-nhs" method="GET" th:action="@{/roles/by-name}" th:object="${roleDTO}">
-
+            <form class="form-nhs" method="GET" th:action="@{/roles/by-name}" th:object="${roleForm}">
 
                 <div class="form-label-group">
                     <input id="name" name="name" th:field="*{name}" type="text" class="form-control"
@@ -46,7 +32,6 @@
 
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Get Role</button>
             </form>
-
 
             <br><br>
             <a href="/home-initial" class="btn btn-lg btn-secondary btn-block">Go back</a>

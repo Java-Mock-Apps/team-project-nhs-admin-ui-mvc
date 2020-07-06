@@ -1,12 +1,11 @@
 package ro.iteahome.nhs.adminui.service;
 
-import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,6 +23,7 @@ import ro.iteahome.nhs.adminui.model.form.AdminCreationForm;
 import ro.iteahome.nhs.adminui.model.form.AdminEmailForm;
 import ro.iteahome.nhs.adminui.model.form.AdminUpdateForm;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,7 +44,7 @@ public class AdminService implements UserDetailsService {
     private ModelMapper modelMapper;
 
     @Autowired
-    private Logger logger;
+    private ServiceUtil serviceUtil;
 
 // C.R.U.D. METHODS: ---------------------------------------------------------------------------------------------------
 
@@ -59,12 +59,28 @@ public class AdminService implements UserDetailsService {
                             AdminDTO.class);
             return responseAdminDTO.getBody();
         } catch (RestClientException ex) {
-            if (ex instanceof HttpClientErrorException.BadRequest && (causedByInvalid(ex) || causedByDuplicate(ex))) {
-                throw new Exception(parseInvalidOrDuplicate(ex));
+            if (ex instanceof HttpClientErrorException.BadRequest && (serviceUtil.causedByInvalid(ex) || serviceUtil.causedByDuplicate(ex))) {
+                throw new Exception(serviceUtil.parseInvalidOrDuplicate(ex));
             } else {
-                logTechnicalWarning("ADMIN", ex);
+                serviceUtil.logTechnicalWarning("ADMIN", ex);
                 throw new GlobalRequestFailedException("ADMIN");
             }
+        }
+    }
+
+    public List<AdminDTO> findAll() {
+        try {
+            ResponseEntity<List<AdminDTO>> adminDTOResponseList =
+                    restTemplate.exchange(
+                            restConfig.getSERVER_URL() + restConfig.getADMINS_URI() + "/all",
+                            HttpMethod.GET,
+                            new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+                            new ParameterizedTypeReference<List<AdminDTO>>() {
+                            });
+            return adminDTOResponseList.getBody();
+        } catch (RestClientException ex) {
+            serviceUtil.logTechnicalWarning("ADMIN", ex);
+            throw new GlobalRequestFailedException("ADMIN");
         }
     }
 
@@ -81,7 +97,7 @@ public class AdminService implements UserDetailsService {
             if (ex instanceof HttpClientErrorException.NotFound) {
                 throw new GlobalNotFoundException("ADMIN");
             } else {
-                logTechnicalWarning("ADMIN", ex);
+                serviceUtil.logTechnicalWarning("ADMIN", ex);
                 throw new GlobalRequestFailedException("ADMIN");
             }
         }
@@ -100,7 +116,7 @@ public class AdminService implements UserDetailsService {
             if (ex instanceof HttpClientErrorException.NotFound) {
                 throw new GlobalNotFoundException("ADMIN");
             } else {
-                logTechnicalWarning("ADMIN", ex);
+                serviceUtil.logTechnicalWarning("ADMIN", ex);
                 throw new GlobalRequestFailedException("ADMIN");
             }
         }
@@ -118,10 +134,10 @@ public class AdminService implements UserDetailsService {
         } catch (RestClientException ex) {
             if (ex instanceof HttpClientErrorException.NotFound) {
                 throw new GlobalNotFoundException("ADMIN");
-            } else if (ex instanceof HttpClientErrorException.BadRequest && (causedByInvalid(ex) || causedByDuplicate(ex))) {
-                throw new Exception(parseInvalidOrDuplicate(ex));
+            } else if (ex instanceof HttpClientErrorException.BadRequest && (serviceUtil.causedByInvalid(ex) || serviceUtil.causedByDuplicate(ex))) {
+                throw new Exception(serviceUtil.parseInvalidOrDuplicate(ex));
             } else {
-                logTechnicalWarning("ADMIN", ex);
+                serviceUtil.logTechnicalWarning("ADMIN", ex);
                 throw new GlobalRequestFailedException("ADMIN");
             }
         }
@@ -139,10 +155,10 @@ public class AdminService implements UserDetailsService {
         } catch (RestClientException ex) {
             if (ex instanceof HttpClientErrorException.NotFound) {
                 throw new GlobalNotFoundException("ADMIN");
-            } else if (ex instanceof HttpClientErrorException.BadRequest && causedByInvalid(ex)) {
-                throw new Exception(parseInvalid(ex));
+            } else if (ex instanceof HttpClientErrorException.BadRequest && serviceUtil.causedByInvalid(ex)) {
+                throw new Exception(serviceUtil.parseInvalid(ex));
             } else {
-                logTechnicalWarning("ADMIN", ex);
+                serviceUtil.logTechnicalWarning("ADMIN", ex);
                 throw new GlobalRequestFailedException("ADMIN");
             }
         }
@@ -170,52 +186,5 @@ public class AdminService implements UserDetailsService {
         admin.setStatus(1);
         admin.setRole("ADMIN");
         return admin;
-    }
-
-    private boolean causedByInvalid(Exception ex) {
-        return ex.getMessage().contains("VALIDATION ERROR IN FIELD");
-    }
-
-    private boolean causedByDuplicate(Exception ex) {
-        return ex.getMessage().contains("Duplicate entry");
-    }
-
-    private String parseInvalid(Exception ex) {
-        if (causedByInvalid(ex)) {
-            return getInvalidMessages(ex.getMessage());
-        } else {
-            return null;
-        }
-    }
-
-    private String parseInvalidOrDuplicate(Exception ex) {
-        if (causedByInvalid(ex)) {
-            return getInvalidMessages(ex.getMessage());
-        } else if (causedByDuplicate(ex)) {
-            return getDuplicateMessage(ex.getMessage());
-        } else {
-            return null;
-        }
-    }
-
-    private String getInvalidMessages(String message) {
-        StringBuilder parsedMessageBuilder = new StringBuilder();
-        String[] quotedParts = message.split("\"");
-        for (String part : quotedParts) {
-            if (part.contains("INVALID "))
-                parsedMessageBuilder.append(part).append("\n");
-        }
-        return parsedMessageBuilder
-                .delete(parsedMessageBuilder.length() - 2, parsedMessageBuilder.length())
-                .toString();
-    }
-
-    private String getDuplicateMessage(String message) {
-        return "\"" + message.split("\'")[1] + "\" ALREADY EXISTS";
-    }
-
-    private void logTechnicalWarning(String entityName, Exception ex) {
-        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        logger.warn("TECHNICAL REST EXCEPTION IN REQUEST BY \"" + userEmail + "\" FOR ENTITY \"" + entityName + "\": \"" + ex.getMessage() + "\"");
     }
 }
