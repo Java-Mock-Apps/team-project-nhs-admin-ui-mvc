@@ -40,6 +40,8 @@ public class Doctor {
 
     private Set<Institution> institutions;
 
+    private String institutionCUIs;
+
     // METHODS: ------------------------------------------------------------------------------------------------------------
 
     public Doctor() {
