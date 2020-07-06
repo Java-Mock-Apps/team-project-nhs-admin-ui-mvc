@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 import ro.iteahome.nhs.adminui.model.dto.AdminDTO;
 import ro.iteahome.nhs.adminui.model.form.AdminCreationForm;
 import ro.iteahome.nhs.adminui.model.form.AdminEmailForm;
@@ -63,7 +62,7 @@ public class AdminController {
     }
 
     @GetMapping("/delete-form")
-    public String showDeleteForm(AdminDTO adminDTO) {
+    public String showDeleteForm(AdminEmailForm adminEmailForm) {
         return "admin/delete-form";
     }
 
@@ -116,9 +115,17 @@ public class AdminController {
     }
 
     @PostMapping("/delete-by-email")
-    public ModelAndView deleteByEmail(AdminDTO adminDTO) {
-        AdminDTO targetAdminDTO = adminService.findByEmail(adminDTO.getEmail());
-        adminService.deleteByEmail(adminDTO.getEmail());
-        return new ModelAndView("admin/home-admin").addObject(targetAdminDTO);
+    public String deleteByEmail(@Valid AdminEmailForm adminEmailForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "admin/delete-form";
+        } else {
+            try {
+                model.addAttribute("adminDTO", adminService.deleteByEmail(adminEmailForm));
+                return "admin/home-admin";
+            } catch (Exception ex) {
+                model.addAttribute("errorMessage", ex.getMessage());
+                return "admin/delete-form";
+            }
+        }
     }
 }

@@ -21,6 +21,7 @@ import ro.iteahome.nhs.adminui.exception.technical.GlobalRequestFailedException;
 import ro.iteahome.nhs.adminui.model.dto.AdminDTO;
 import ro.iteahome.nhs.adminui.model.entity.Admin;
 import ro.iteahome.nhs.adminui.model.form.AdminCreationForm;
+import ro.iteahome.nhs.adminui.model.form.AdminEmailForm;
 import ro.iteahome.nhs.adminui.model.form.AdminUpdateForm;
 
 import java.util.Optional;
@@ -126,18 +127,24 @@ public class AdminService implements UserDetailsService {
         }
     }
 
-    public AdminDTO deleteByEmail(String email) {
-        AdminDTO adminDTO = findByEmail(email);
-        if (adminDTO != null) {
+    public AdminDTO deleteByEmail(AdminEmailForm adminEmailForm) throws Exception {
+        try {
             ResponseEntity<AdminDTO> responseAdminDTO =
                     restTemplate.exchange(
-                            restConfig.getSERVER_URL() + restConfig.getADMINS_URI() + "/by-email/" + email,
+                            restConfig.getSERVER_URL() + restConfig.getADMINS_URI() + "/by-email/" + adminEmailForm.getEmail(),
                             HttpMethod.DELETE,
                             new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
                             AdminDTO.class);
             return responseAdminDTO.getBody();
-        } else {
-            throw new GlobalNotFoundException("ADMIN");
+        } catch (RestClientException ex) {
+            if (ex instanceof HttpClientErrorException.NotFound) {
+                throw new GlobalNotFoundException("ADMIN");
+            } else if (ex instanceof HttpClientErrorException.BadRequest && causedByInvalid(ex)) {
+                throw new Exception(parseInvalid(ex));
+            } else {
+                logTechnicalWarning("ADMIN", ex);
+                throw new GlobalRequestFailedException("ADMIN");
+            }
         }
     }
 
@@ -176,14 +183,6 @@ public class AdminService implements UserDetailsService {
     private String parseInvalid(Exception ex) {
         if (causedByInvalid(ex)) {
             return getInvalidMessages(ex.getMessage());
-        } else {
-            return null;
-        }
-    }
-
-    private String parseDuplicate(Exception ex) {
-        if (causedByDuplicate(ex)) {
-            return getDuplicateMessage(ex.getMessage());
         } else {
             return null;
         }

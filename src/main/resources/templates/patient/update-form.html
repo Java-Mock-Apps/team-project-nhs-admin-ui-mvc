@@ -26,7 +26,7 @@
             <h1 class="h3 mb-3 font-weight-normal">Update Patient form</h1>
 
             <div class="form-label-group">
-                <input id="email" name="email" th:field="*{email}" type="email" class="form-control"
+                <input id="email" name="email" th:field="*{email}" type="text" class="form-control"
                        placeholder="Email address" autofocus>
                 <span th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></span>
                 <label for="email">Email address</label>
