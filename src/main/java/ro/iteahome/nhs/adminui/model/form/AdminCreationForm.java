@@ -1,6 +1,7 @@
 package ro.iteahome.nhs.adminui.model.form;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -18,10 +19,10 @@ public class AdminCreationForm {
     @Pattern(regexp = "((?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,32})", message = "INVALID PASSWORD")
     private String password;
 
-    @NotNull(message = "FIRST NAME CANNOT BE EMPTY.")
+    @NotEmpty(message = "FIRST NAME CANNOT BE EMPTY.")
     private String firstName;
 
-    @NotNull(message = "LAST NAME CANNOT BE EMPTY.")
+    @NotEmpty(message = "LAST NAME CANNOT BE EMPTY.")
     private String lastName;
 
     @NotNull(message = "PHONE NUMBER NAME CANNOT BE EMPTY.")

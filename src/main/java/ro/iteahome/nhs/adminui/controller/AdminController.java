@@ -59,14 +59,6 @@ public class AdminController {
 
 // METHODS: ------------------------------------------------------------------------------------------------------------
 
-    // TODO: Incorporate exception handling. Leaving form fields empty is an issue.
-
-//    @PostMapping
-//    public ModelAndView add(/*@Valid*/ AdminCreationForm adminCreationForm) throws Exception {
-//        AdminDTO adminDTO = adminService.add(adminCreationForm);
-//        return new ModelAndView("admin/home-admin").addObject(adminDTO);
-//    }
-
     @PostMapping
     public String add(@Valid AdminCreationForm adminCreationForm, BindingResult bindingResult, Model model) throws Exception {
         if (bindingResult.hasErrors()) {
