@@ -106,10 +106,16 @@
     let titleDiv = $('.title .filter-option-inner-inner');
     let specialtiesDiv = $('.specialties .filter-option-inner-inner');
     let institutionsDiv = $('.institutions .filter-option-inner-inner');
+
+
     let titleArr = [[${doctor.title}]].split(',')
         .map(title => { return title });
     let specialtiesArr = [[${doctor.specialties}]].split(',')
         .map(specialty => { return specialty });
+
+    // let institutionsArr = [[${doctor.institution}]].split(',')
+    //     .map(specialty => { return specialty });
+
     if (specialtiesArr[0] != ""){
         $('.specialties .selectpicker').selectpicker('val', specialtiesArr);
     }
@@ -120,6 +126,13 @@
     }
     else
         titleDiv.html("Please select a title");
+
+    // if (institutionsArr[0] != ""){
+    //     $('.institutions .selectpicker').selectpicker('val', institutionsArr);
+    // }
+    // else
+    //     titleDiv.html("Please select a title");
+
 </script>
 
 </body>
