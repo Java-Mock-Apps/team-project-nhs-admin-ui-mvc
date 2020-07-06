@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import ro.iteahome.nhs.adminui.model.dto.AdminDTO;
-import ro.iteahome.nhs.adminui.model.entity.Admin;
 import ro.iteahome.nhs.adminui.model.form.AdminCreationForm;
 import ro.iteahome.nhs.adminui.model.form.AdminEmailForm;
+import ro.iteahome.nhs.adminui.model.form.AdminUpdateForm;
 import ro.iteahome.nhs.adminui.service.AdminService;
 
 import javax.validation.Valid;
@@ -42,14 +42,24 @@ public class AdminController {
     }
 
     @GetMapping("/update-search-form")
-    public String showUpdateSearchForm(AdminDTO adminDTO) {
+    public String showUpdateSearchForm(AdminEmailForm adminEmailForm) {
         return "admin/update-search-form";
     }
 
     @GetMapping("/update-form")
-    public ModelAndView showUpdateForm(@Valid AdminEmailForm adminEmailForm) {
-        Admin admin = adminService.findSensitiveByEmail(adminEmailForm.getEmail());
-        return new ModelAndView("admin/update-form").addObject(admin);
+    public String showUpdateForm(@Valid AdminEmailForm adminEmailForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "admin/update-search-form";
+        } else {
+            try {
+                AdminUpdateForm adminUpdateForm = adminService.findSensitiveByEmail(adminEmailForm.getEmail());
+                model.addAttribute("adminUpdateForm", adminUpdateForm);
+                return "admin/update-form";
+            } catch (Exception ex) {
+                model.addAttribute("errorMessage", ex.getMessage());
+                return "admin/update-search-form";
+            }
+        }
     }
 
     @GetMapping("/delete-form")
@@ -60,7 +70,7 @@ public class AdminController {
 // METHODS: ------------------------------------------------------------------------------------------------------------
 
     @PostMapping
-    public String add(@Valid AdminCreationForm adminCreationForm, BindingResult bindingResult, Model model) throws Exception {
+    public String add(@Valid AdminCreationForm adminCreationForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "admin/add-form";
         } else {
@@ -81,7 +91,7 @@ public class AdminController {
             return "admin/get-form";
         } else {
             try {
-                model.addAttribute(adminService.findByEmail(adminEmailForm.getEmail()));
+                model.addAttribute("adminDTO", adminService.findByEmail(adminEmailForm.getEmail()));
                 return "admin/home-admin";
             } catch (Exception ex) {
                 model.addAttribute("errorMessage", ex.getMessage());
@@ -91,9 +101,18 @@ public class AdminController {
     }
 
     @PostMapping("/updated-admin")
-    public ModelAndView update(@Valid Admin admin) throws Exception {
-        AdminDTO adminDTO = adminService.update(admin);
-        return new ModelAndView("admin/home-admin").addObject(adminDTO);
+    public String update(@Valid AdminUpdateForm adminUpdateForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "admin/update-form";
+        } else {
+            try {
+                model.addAttribute("adminDTO", adminService.update(adminUpdateForm));
+                return "admin/home-admin";
+            } catch (Exception ex) {
+                model.addAttribute("errorMessage", ex.getMessage());
+                return "admin/update-form";
+            }
+        }
     }
 
     @PostMapping("/delete-by-email")

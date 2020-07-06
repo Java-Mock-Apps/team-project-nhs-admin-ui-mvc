@@ -1,189 +1,200 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>NHS Admin Home</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
-    <!-- Bootstrap core CSS -->
-    <link href="/assets/dist/css/bootstrap.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>NHS Admin Home</title>
+        <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
+        <!-- Bootstrap core CSS -->
+        <link href="/assets/dist/css/bootstrap.css" rel="stylesheet">
+        <!-- Custom styles for this template -->
 
-    <link href="/assets/styles/nhsforms.css" rel="stylesheet">
+        <link href="/assets/styles/nhsforms.css" rel="stylesheet">
 
-    <link href="/assets/styles/home-initial.css" rel="stylesheet">
-
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-            crossorigin="anonymous"></script>
+        <link href="/assets/styles/home-initial.css" rel="stylesheet">
 
 
-</head>
-
-<body class="text-center form-nhs">
-<div class="form-nhs" th:fragment="categories">
-    <img class="mb-4" src="../assets/brand/n.png" alt="" width="156" height="156">
-    <br>
-    <h1 class="h3 mb-3 font-weight-normal">Welcome to NHS Admin UI!</h1>
-    <br>
-
-
-    <div class="options" id="accordion">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+                integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+                crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+                integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+                crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+                integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+                crossorigin="anonymous"></script>
 
 
-        <button id="headingAdmin" class="btn btn-lg btn-primary btn-block collapsed" data-toggle="collapse"
-                data-target="#collapseAdmin" aria-expanded="true" aria-controls="collapseAdmin">
-            Admins
-        </button>
+    </head>
+
+    <body class="text-center form-nhs">
+        <div class="form-nhs" th:fragment="categories">
+            <img class="mb-4" src="../assets/brand/n.png" alt="" width="156" height="156">
+            <br>
+            <h1 class="h3 mb-3 font-weight-normal">Welcome to NHS Admin UI!</h1>
+            <br>
 
 
-        <div id="collapseAdmin" class="collapse" aria-labelledby="headingAdmin" data-parent="#accordion">
-            <div class="card-body">
-                <li><a href='/admins/add-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Add Admin</a>
-                </li>
+            <div class="options" id="accordion">
+
+
+                <button id="headingAdmin" class="btn btn-lg btn-primary btn-block collapsed" data-toggle="collapse"
+                        data-target="#collapseAdmin" aria-expanded="true" aria-controls="collapseAdmin">
+                    Admins
+                </button>
+
+
+                <div id="collapseAdmin" class="collapse" aria-labelledby="headingAdmin" data-parent="#accordion">
+                    <div class="card-body">
+                        <li><a href='/admins/add-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Add
+                            Admin</a>
+                        </li>
+                        <br>
+                        <li><a href='/admins/get-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Get
+                            Admin</a>
+                        </li>
+                        <br>
+                        <li><a href='/admins/update-search-form'
+                               class='btn btn-lg btn-secondary btn-block optionbutton'>Update
+                            Admin</a></li>
+                        <br>
+                        <li><a href='/admins/delete-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Delete
+                            Admin</a></li>
+                    </div>
+                </div>
+
                 <br>
-                <li><a href='/admins/get-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Get Admin</a>
-                </li>
+
+                <button id="headingRole" class="btn btn-lg btn-primary btn-block collapsed" data-toggle="collapse"
+                        data-target="#collapseRole" aria-expanded="false" aria-controls="collapseRole">
+                    Roles
+                </button>
+
+                <div id="collapseRole" class="collapse" aria-labelledby="headingRole" data-parent="#accordion">
+                    <div class="card-body">
+                        <li><a href='/roles/add-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Add
+                            Role</a>
+                        </li>
+                        <br>
+                        <li><a href='/roles/get-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Get
+                            Role</a>
+                        </li>
+                        <br>
+                        <li><a href='/roles/update-search-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Update
+                            Role</a></li>
+                        <br>
+                        <li><a href='/roles/delete-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Delete
+                            Role</a></li>
+                    </div>
+                </div>
                 <br>
-                <li><a href='/admins/update-search-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Update
-                    Admin</a></li>
+
+                <button id="headingInstitution" class="btn btn-lg btn-primary btn-block collapsed"
+                        data-toggle="collapse"
+                        data-target="#collapseInstitution" aria-expanded="false"
+                        aria-controls="collapseInstitution">
+                    Institutions
+                </button>
+
+                <div id="collapseInstitution" class="collapse" aria-labelledby="headingInstitution"
+                     data-parent="#accordion">
+                    <div class="card-body">
+                        <li><a href='/medical-institutions/add-form'
+                               class='btn btn-lg btn-secondary btn-block optionbutton'>Add Institution</a></li>
+                        <br>
+                        <li><a href='/medical-institutions/get-form'
+                               class='btn btn-lg btn-secondary btn-block optionbutton'>Get Institution</a></li>
+                        <br>
+                        <li><a href='/medical-institutions/update-search-form'
+                               class='btn btn-lg btn-secondary btn-block optionbutton'>Update Institution</a></li>
+                        <br>
+                        <li><a href='/medical-institutions/delete-form'
+                               class='btn btn-lg btn-secondary btn-block optionbutton'>Delete Institution</a></li>
+                    </div>
+                </div>
                 <br>
-                <li><a href='/admins/delete-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Delete
-                    Admin</a></li>
+
+                <button id="headingDoctor" class="btn btn-lg btn-primary btn-block collapsed" data-toggle="collapse"
+                        data-target="#collapseDoctor" aria-expanded="false" aria-controls="collapseDoctor">
+                    Doctors
+                </button>
+
+                <div id="collapseDoctor" class="collapse" aria-labelledby="headingDoctor" data-parent="#accordion">
+                    <div class="card-body">
+                        <li><a href='/doctors/add-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Add
+                            Doctor</a></li>
+                        <br>
+                        <li><a href='/doctors/get-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Get
+                            Doctor</a></li>
+                        <br>
+                        <li><a href='/doctors/update-search-form'
+                               class='btn btn-lg btn-secondary btn-block optionbutton'>Update
+                            Doctor</a></li>
+                        <br>
+                        <li><a href='/doctors/delete-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Delete
+                            Doctor</a></li>
+                    </div>
+                </div>
+                <br>
+
+                <button id="headingNurse" class="btn btn-lg btn-primary btn-block collapsed" data-toggle="collapse"
+                        data-target="#collapseNurse" aria-expanded="false" aria-controls="collapseNurse">
+                    Nurses
+                </button>
+
+                <div id="collapseNurse" class="collapse" aria-labelledby="headingNurse" data-parent="#accordion">
+                    <div class="card-body">
+                        <li><a href='/nurses/add-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Add
+                            Nurse</a>
+                        </li>
+                        <br>
+                        <li><a href='/nurses/get-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Get
+                            Nurse</a>
+                        </li>
+                        <br>
+                        <li><a href='/nurses/update-search-form'
+                               class='btn btn-lg btn-secondary btn-block optionbutton'>Update
+                            Nurse</a></li>
+                        <br>
+                        <li><a href='/nurses/delete-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Delete
+                            Nurse</a></li>
+                    </div>
+                </div>
+                <br>
+
+                <button id="headingPatient" class="btn btn-lg btn-primary btn-block collapsed" data-toggle="collapse"
+                        data-target="#collapsePatient" aria-expanded="false" aria-controls="collapsePatient">
+                    Patients
+                </button>
+
+                <div id="collapsePatient" class="collapse" aria-labelledby="headingPatient" data-parent="#accordion">
+                    <div class="card-body">
+                        <li><a href='/patients/add-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Add
+                            Patient</a></li>
+                        <br>
+                        <li><a href='/patients/get-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Get
+                            Patient</a></li>
+                        <br>
+                        <li><a href='/patients/update-search-form'
+                               class='btn btn-lg btn-secondary btn-block optionbutton'>Update
+                            Patient</a></li>
+                        <br>
+                        <li><a href='/patients/delete-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Delete
+                            Patient</a></li>
+                    </div>
+                </div>
             </div>
+            <br>
+
+
         </div>
 
+        <a href="/logout" class="btn btn-md btn-danger btn-block"
+           style="width: 50%; margin-left:25%; margin-right: 25% ">Logout</a>
         <br>
+        <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
 
-        <button id="headingRole" class="btn btn-lg btn-primary btn-block collapsed" data-toggle="collapse"
-                data-target="#collapseRole" aria-expanded="false" aria-controls="collapseRole">
-            Roles
-        </button>
-
-        <div id="collapseRole" class="collapse" aria-labelledby="headingRole" data-parent="#accordion">
-            <div class="card-body">
-                <li><a href='/roles/add-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Add Role</a>
-                </li>
-                <br>
-                <li><a href='/roles/get-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Get Role</a>
-                </li>
-                <br>
-                <li><a href='/roles/update-search-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Update
-                    Role</a></li>
-                <br>
-                <li><a href='/roles/delete-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Delete
-                    Role</a></li>
-            </div>
-        </div>
-        <br>
-
-        <button id="headingInstitution" class="btn btn-lg btn-primary btn-block collapsed" data-toggle="collapse"
-                data-target="#collapseInstitution" aria-expanded="false"
-                aria-controls="collapseInstitution">
-            Institutions
-        </button>
-
-        <div id="collapseInstitution" class="collapse" aria-labelledby="headingInstitution"
-             data-parent="#accordion">
-            <div class="card-body">
-                <li><a href='/medical-institutions/add-form'
-                       class='btn btn-lg btn-secondary btn-block optionbutton'>Add Institution</a></li>
-                <br>
-                <li><a href='/medical-institutions/get-form'
-                       class='btn btn-lg btn-secondary btn-block optionbutton'>Get Institution</a></li>
-                <br>
-                <li><a href='/medical-institutions/update-search-form'
-                       class='btn btn-lg btn-secondary btn-block optionbutton'>Update Institution</a></li>
-                <br>
-                <li><a href='/medical-institutions/delete-form'
-                       class='btn btn-lg btn-secondary btn-block optionbutton'>Delete Institution</a></li>
-            </div>
-        </div>
-        <br>
-
-        <button id="headingDoctor" class="btn btn-lg btn-primary btn-block collapsed" data-toggle="collapse"
-                data-target="#collapseDoctor" aria-expanded="false" aria-controls="collapseDoctor">
-            Doctors
-        </button>
-
-        <div id="collapseDoctor" class="collapse" aria-labelledby="headingDoctor" data-parent="#accordion">
-            <div class="card-body">
-                <li><a href='/doctors/add-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Add
-                    Doctor</a></li>
-                <br>
-                <li><a href='/doctors/get-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Get
-                    Doctor</a></li>
-                <br>
-                <li><a href='/doctors/update-search-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Update
-                    Doctor</a></li>
-                <br>
-                <li><a href='/doctors/delete-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Delete
-                    Doctor</a></li>
-            </div>
-        </div>
-        <br>
-
-        <button id="headingNurse" class="btn btn-lg btn-primary btn-block collapsed" data-toggle="collapse"
-                data-target="#collapseNurse" aria-expanded="false" aria-controls="collapseNurse">
-            Nurses
-        </button>
-
-        <div id="collapseNurse" class="collapse" aria-labelledby="headingNurse" data-parent="#accordion">
-            <div class="card-body">
-                <li><a href='/nurses/add-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Add Nurse</a>
-                </li>
-                <br>
-                <li><a href='/nurses/get-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Get Nurse</a>
-                </li>
-                <br>
-                <li><a href='/nurses/update-search-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Update
-                    Nurse</a></li>
-                <br>
-                <li><a href='/nurses/delete-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Delete
-                    Nurse</a></li>
-            </div>
-        </div>
-        <br>
-
-        <button id="headingPatient" class="btn btn-lg btn-primary btn-block collapsed" data-toggle="collapse"
-                data-target="#collapsePatient" aria-expanded="false" aria-controls="collapsePatient">
-            Patients
-        </button>
-
-        <div id="collapsePatient" class="collapse" aria-labelledby="headingPatient" data-parent="#accordion">
-            <div class="card-body">
-                <li><a href='/patients/add-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Add
-                    Patient</a></li>
-                <br>
-                <li><a href='/patients/get-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Get
-                    Patient</a></li>
-                <br>
-                <li><a href='/patients/update-search-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Update
-                    Patient</a></li>
-                <br>
-                <li><a href='/patients/delete-form' class='btn btn-lg btn-secondary btn-block optionbutton'>Delete
-                    Patient</a></li>
-            </div>
-        </div>
-    </div>
-    <br>
-
-
-</div>
-
-<a href="/logout" class="btn btn-md btn-danger btn-block"
-   style="width: 50%; margin-left:25%; margin-right: 25% ">Logout</a>
-<br>
-<p class="mt-5 mb-3 text-muted">&copy; 2020</p>
-
-</body>
+    </body>
 
 
 </html>

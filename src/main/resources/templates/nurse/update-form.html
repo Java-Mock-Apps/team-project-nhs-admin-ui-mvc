@@ -1,99 +1,101 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>NHS Update Nurse</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>NHS Update Nurse</title>
+        <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
 
 
-    <!-- Bootstrap core CSS -->
-    <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css"/>
-    <!-- Custom styles for this template -->
-    <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
+        <!-- Bootstrap core CSS -->
+        <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css"/>
+        <!-- Custom styles for this template -->
+        <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
-</head>
+    </head>
 
-<body class="text-center">
-
-
-<form class="form-nhs" method="POST" th:action="@{/nurses/updated-nurse}" th:object="${nurse}">
-    <input id="id" name="id" th:field="*{id}" type="hidden">
-    <input id="cnp" name="cnp" th:field="*{cnp}" type="hidden">
-    <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
-    <h1 class="h3 mb-3 font-weight-normal">Update Nurse form</h1>
-
-    <div class="form-label-group">
-        <input id="email" name="email" th:field="*{email}" type="email" class="form-control"
-               placeholder="Email address" autofocus>
-        <span th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></span>
-        <label for="email">Email address</label>
-    </div>
+    <body class="text-center">
 
 
-    <div class="form-label-group specialties">
-        <select id="specialties" name="specialties" th:field="*{specialties}"
-                class="form-control selectpicker" multiple
-                data-live-search="true">
-            <option value="" selected disabled>Please select a speciality</option>
-            <option th:each="specialty : ${nurseSpecialties}" th:value="${specialty}" th:text="${specialty}"></option>
-        </select>
-        <span th:errors="*{specialties}" th:if="${#fields.hasErrors('specialties')}"></span>
-    </div>
+        <form class="form-nhs" method="POST" th:action="@{/nurses/updated-nurse}" th:object="${nurse}">
+            <input id="id" name="id" th:field="*{id}" type="hidden">
+            <input id="cnp" name="cnp" th:field="*{cnp}" type="hidden">
+            <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
+            <h1 class="h3 mb-3 font-weight-normal">Update Nurse form</h1>
 
-    <div class="form-label-group title">
-        <select id="title" name="title" th:field="*{title}" class="form-control selectpicker" multiple
-                data-live-search="true">
-            <option value="" selected disabled>Please select a title</option>
-            <option th:each="nurseTitle : ${nurseTitles}" th:value="${nurseTitle}" th:text="${nurseTitle}"></option>
-        </select>
-        <span th:errors="*{title}" th:if="${#fields.hasErrors('title')}"></span>
-    </div>
-
-    <div class="form-label-group">
-        <input id="firstName" name="firstName" th:field="*{firstName}" type="text" class="form-control"
-               placeholder="First Name">
-        <span th:errors="*{firstName}" th:if="${#fields.hasErrors('firstName')}"></span>
-        <label for="firstName">First Name</label>
-    </div>
-
-    <div class="form-label-group">
-        <input id="lastName" name="lastName" th:field="*{lastName}" type="text" class="form-control"
-               placeholder="Last Name">
-        <span th:errors="*{lastName}" th:if="${#fields.hasErrors('lastName')}"></span>
-        <label for="lastName">Last Name</label>
-    </div>
-
-    <div class="form-label-group">
-        <input id="licenseNo" name="licenseNo" th:field="*{licenseNo}" type="text" class="form-control"
-               placeholder="License No.">
-        <span th:errors="*{licenseNo}" th:if="${#fields.hasErrors('licenseNo')}"></span>
-        <label for="lastName">License No.</label>
-    </div>
-
-    <div class="form-label-group">
-        <input id="phoneNoRo" name="phoneNoRo" th:field="*{phoneNoRo}" type="text" class="form-control"
-               placeholder="Romanian Phone Number">
-        <span th:errors="*{phoneNoRo}" th:if="${#fields.hasErrors('phoneNoRo')}"></span>
-        <label for="phoneNoRo">Romanian Phone Number</label>
-    </div>
+            <div class="form-label-group">
+                <input id="email" name="email" th:field="*{email}" type="email" class="form-control"
+                       placeholder="Email address" autofocus>
+                <span th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></span>
+                <label for="email">Email address</label>
+            </div>
 
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Update Nurse</button>
+            <div class="form-label-group specialties">
+                <select id="specialties" name="specialties" th:field="*{specialties}"
+                        class="form-control selectpicker" multiple
+                        data-live-search="true">
+                    <option value="" selected disabled>Please select a speciality</option>
+                    <option th:each="specialty : ${nurseSpecialties}" th:value="${specialty}"
+                            th:text="${specialty}"></option>
+                </select>
+                <span th:errors="*{specialties}" th:if="${#fields.hasErrors('specialties')}"></span>
+            </div>
 
-    <br><br>
-    <a href="/home-initial" class="btn btn-lg btn-secondary btn-block">Go back</a>
-    <br><br>
+            <div class="form-label-group title">
+                <select id="title" name="title" th:field="*{title}" class="form-control selectpicker" multiple
+                        data-live-search="true">
+                    <option value="" selected disabled>Please select a title</option>
+                    <option th:each="nurseTitle : ${nurseTitles}" th:value="${nurseTitle}"
+                            th:text="${nurseTitle}"></option>
+                </select>
+                <span th:errors="*{title}" th:if="${#fields.hasErrors('title')}"></span>
+            </div>
 
-    <p class="mt-5 mb-3 text-muted">&copy; 2020</p></form>
+            <div class="form-label-group">
+                <input id="firstName" name="firstName" th:field="*{firstName}" type="text" class="form-control"
+                       placeholder="First Name">
+                <span th:errors="*{firstName}" th:if="${#fields.hasErrors('firstName')}"></span>
+                <label for="firstName">First Name</label>
+            </div>
 
-<script th:inline="javascript">
+            <div class="form-label-group">
+                <input id="lastName" name="lastName" th:field="*{lastName}" type="text" class="form-control"
+                       placeholder="Last Name">
+                <span th:errors="*{lastName}" th:if="${#fields.hasErrors('lastName')}"></span>
+                <label for="lastName">Last Name</label>
+            </div>
+
+            <div class="form-label-group">
+                <input id="licenseNo" name="licenseNo" th:field="*{licenseNo}" type="text" class="form-control"
+                       placeholder="License No.">
+                <span th:errors="*{licenseNo}" th:if="${#fields.hasErrors('licenseNo')}"></span>
+                <label for="lastName">License No.</label>
+            </div>
+
+            <div class="form-label-group">
+                <input id="phoneNoRo" name="phoneNoRo" th:field="*{phoneNoRo}" type="text" class="form-control"
+                       placeholder="Romanian Phone Number">
+                <span th:errors="*{phoneNoRo}" th:if="${#fields.hasErrors('phoneNoRo')}"></span>
+                <label for="phoneNoRo">Romanian Phone Number</label>
+            </div>
+
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Update Nurse</button>
+
+            <br><br>
+            <a href="/home-initial" class="btn btn-lg btn-secondary btn-block">Go back</a>
+            <br><br>
+
+            <p class="mt-5 mb-3 text-muted">&copy; 2020</p></form>
+
+        <script th:inline="javascript">
     $('select').selectpicker();
     let titleDiv = $('.title .filter-option-inner-inner');
     let specialtiesDiv = $('.specialties .filter-option-inner-inner');
@@ -111,7 +113,10 @@
     }
     else
         titleDiv.html("Please select a title");
-</script>
 
-</body>
+
+
+        </script>
+
+    </body>
 </html>

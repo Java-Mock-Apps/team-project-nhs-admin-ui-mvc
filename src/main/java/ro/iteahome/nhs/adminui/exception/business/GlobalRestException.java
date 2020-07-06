@@ -1,6 +1,6 @@
 package ro.iteahome.nhs.adminui.exception.business;
 
-public class GlobalRestException extends RuntimeException{
+public class GlobalRestException extends RuntimeException {
 
     private final String entityName;
 

@@ -1,57 +1,57 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>NHS Get Role</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>NHS Get Role</title>
+        <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
 
 
-    <!-- Bootstrap core CSS -->
-    <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
+        <!-- Bootstrap core CSS -->
+        <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
 
-</head>
+    </head>
 
-<body class="text-center">
-<div class="form-nhs">
-    <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
-    <h1 class="h3 mb-3 font-weight-normal">Get Role form</h1>
+    <body class="text-center">
+        <div class="form-nhs">
+            <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
+            <h1 class="h3 mb-3 font-weight-normal">Get Role form</h1>
 
-    <form class="form-nhs" method="GET" th:action="@{/roles/by-id}" th:object="${roleDTO}">
-
-
-        <div class="form-label-group">
-            <input id="id" name="id" th:field="*{id}" type="number" class="form-control"
-                   placeholder="Role ID" autofocus>
-            <!-- TODO: Try to remove number scroll bar. If not, try to stylize it. -->
-            <span th:errors="*{id}" th:if="${#fields.hasErrors('id')}"></span>
-            <label for="id">Role ID</label>
-        </div>
-
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Get Role</button>
-    </form>
+            <form class="form-nhs" method="GET" th:action="@{/roles/by-id}" th:object="${roleDTO}">
 
 
-    <form class="form-nhs" method="GET" th:action="@{/roles/by-name}" th:object="${roleDTO}">
+                <div class="form-label-group">
+                    <input id="id" name="id" th:field="*{id}" type="number" class="form-control"
+                           placeholder="Role ID" autofocus>
+                    <!-- TODO: Try to remove number scroll bar. If not, try to stylize it. -->
+                    <span th:errors="*{id}" th:if="${#fields.hasErrors('id')}"></span>
+                    <label for="id">Role ID</label>
+                </div>
+
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Get Role</button>
+            </form>
 
 
-        <div class="form-label-group">
-            <input id="name" name="name" th:field="*{name}" type="text" class="form-control"
-                   placeholder="Role name">
-            <span th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></span>
-            <label for="name">Role name</label>
-        </div>
-
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Get Role</button>
-    </form>
+            <form class="form-nhs" method="GET" th:action="@{/roles/by-name}" th:object="${roleDTO}">
 
 
-    <br><br>
-    <a href="/home-initial" class="btn btn-lg btn-secondary btn-block">Go back</a>
-    <br><br>
+                <div class="form-label-group">
+                    <input id="name" name="name" th:field="*{name}" type="text" class="form-control"
+                           placeholder="Role name">
+                    <span th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></span>
+                    <label for="name">Role name</label>
+                </div>
 
-    <p class="mt-5 mb-3 text-muted">&copy; 2020</p></div>
-</body>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Get Role</button>
+            </form>
+
+
+            <br><br>
+            <a href="/home-initial" class="btn btn-lg btn-secondary btn-block">Go back</a>
+            <br><br>
+
+            <p class="mt-5 mb-3 text-muted">&copy; 2020</p></div>
+    </body>
 </html>

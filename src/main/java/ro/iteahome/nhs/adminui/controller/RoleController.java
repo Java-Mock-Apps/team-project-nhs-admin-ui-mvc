@@ -2,22 +2,17 @@ package ro.iteahome.nhs.adminui.controller;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import ro.iteahome.nhs.adminui.model.form.RoleCreationForm;
 import ro.iteahome.nhs.adminui.model.dto.RoleDTO;
 import ro.iteahome.nhs.adminui.model.entity.Role;
+import ro.iteahome.nhs.adminui.model.form.RoleCreationForm;
 import ro.iteahome.nhs.adminui.service.RoleService;
 
 import javax.validation.Valid;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/roles")
@@ -39,7 +34,9 @@ public class RoleController {
     }
 
     @GetMapping("/get-form")
-    public String showGetForm(RoleDTO roleDTO) { return "role/get-form"; }
+    public String showGetForm(RoleDTO roleDTO) {
+        return "role/get-form";
+    }
 
     @GetMapping("/update-search-form")
     public String showUpdateSearchForm(RoleDTO roleDTO) {

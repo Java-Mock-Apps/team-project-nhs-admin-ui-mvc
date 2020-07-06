@@ -1,4 +1,4 @@
-package ro.iteahome.nhs.adminui.config;
+package ro.iteahome.nhs.adminui.config.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,6 +10,6 @@ public class LoggerConfig {
 
     @Bean
     public Logger logger() {
-        return LogManager.getLogger();
+        return LogManager.getLogger("NHS-ADMIN-UI LOGGER");
     }
 }

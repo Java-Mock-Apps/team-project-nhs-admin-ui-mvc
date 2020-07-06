@@ -28,7 +28,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
         resolver.setExceptionMappings(mappings);
         resolver.setDefaultErrorView("error/test-error");
-        resolver.setWarnLogCategory("NHS ADMIN UI (TEMPORARY) LOGGER"); // TODO: Remove this after completing exception handling. Business exceptions should not be logged.
+        resolver.setWarnLogCategory("NHS-ADMIN-UI FAIL-SAFE LOGGER"); // TODO: Remove this after completing exception handling. Business exceptions should not be logged.
 
         return resolver;
     }

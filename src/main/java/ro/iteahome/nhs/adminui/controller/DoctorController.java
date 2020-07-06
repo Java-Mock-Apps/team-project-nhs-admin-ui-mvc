@@ -3,13 +3,14 @@ package ro.iteahome.nhs.adminui.controller;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import ro.iteahome.nhs.adminui.model.entity.Doctor;
 import ro.iteahome.nhs.adminui.service.DoctorService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/doctors")
@@ -28,14 +29,16 @@ public class DoctorController {
     @GetMapping("/add-form")
     public ModelAndView showAddForm(Doctor doctor) {
         String[] doctorSpecialties = doctorService.getSpecialties();
-        String[] doctorTitles =  doctorService.getTitles();
+        String[] doctorTitles = doctorService.getTitles();
         return new ModelAndView("doctor/add-form")
-        .addObject("doctorSpecialties",doctorSpecialties)
-                .addObject("doctorTitles",doctorTitles);
+                .addObject("doctorSpecialties", doctorSpecialties)
+                .addObject("doctorTitles", doctorTitles);
     }
 
     @GetMapping("/get-form")
-    public String showGetForm(Doctor doctor) { return "doctor/get-form"; }
+    public String showGetForm(Doctor doctor) {
+        return "doctor/get-form";
+    }
 
     @GetMapping("/update-search-form")
     public String showUpdateSearchForm(Doctor doctor) {
@@ -58,7 +61,7 @@ public class DoctorController {
     }
 
     @GetMapping("/by-cnp")
-    public ModelAndView getByCnp( Doctor doctor) {
+    public ModelAndView getByCnp(Doctor doctor) {
         Doctor databaseDoctor = doctorService.findByCnp(doctor.getCnp());
         return new ModelAndView("doctor/home-doctor").addObject(databaseDoctor);
     }
@@ -69,8 +72,8 @@ public class DoctorController {
         String[] doctorTitles = doctorService.getTitles();
         Doctor databaseDoctor = doctorService.findByCnp(doctor.getCnp());
         return new ModelAndView("doctor/update-form").addObject(databaseDoctor)
-                .addObject("doctorSpecialties",doctorSpecialties)
-                .addObject("doctorTitles",doctorTitles);
+                .addObject("doctorSpecialties", doctorSpecialties)
+                .addObject("doctorTitles", doctorTitles);
     }
 
     @PostMapping("/updated-doctor")

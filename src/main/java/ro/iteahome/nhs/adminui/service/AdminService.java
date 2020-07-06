@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,6 +21,7 @@ import ro.iteahome.nhs.adminui.exception.technical.GlobalRequestFailedException;
 import ro.iteahome.nhs.adminui.model.dto.AdminDTO;
 import ro.iteahome.nhs.adminui.model.entity.Admin;
 import ro.iteahome.nhs.adminui.model.form.AdminCreationForm;
+import ro.iteahome.nhs.adminui.model.form.AdminUpdateForm;
 
 import java.util.Optional;
 
@@ -56,8 +58,8 @@ public class AdminService implements UserDetailsService {
                             AdminDTO.class);
             return responseAdminDTO.getBody();
         } catch (RestClientException ex) {
-            if (ex instanceof HttpClientErrorException.BadRequest && causedByInvalidOrDuplicate(ex)) {
-                throw new Exception(parseInvalidOrDuplicate(ex.getMessage()));
+            if (ex instanceof HttpClientErrorException.BadRequest && (causedByInvalid(ex) || causedByDuplicate(ex))) {
+                throw new Exception(parseInvalidOrDuplicate(ex));
             } else {
                 logTechnicalWarning("ADMIN", ex);
                 throw new GlobalRequestFailedException("ADMIN");
@@ -84,31 +86,43 @@ public class AdminService implements UserDetailsService {
         }
     }
 
-    public Admin findSensitiveByEmail(String email) {
-        ResponseEntity<Admin> adminResponse =
-                restTemplate.exchange(
-                        restConfig.getSERVER_URL() + restConfig.getADMINS_URI() + "/sensitive/by-email/" + email,
-                        HttpMethod.GET,
-                        new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
-                        Admin.class);
-        Admin admin = adminResponse.getBody();
-        if (admin != null) {
-            return admin;
-        } else {
-            throw new GlobalNotFoundException("ADMIN");
+    public AdminUpdateForm findSensitiveByEmail(String email) {
+        try {
+            ResponseEntity<AdminUpdateForm> responseAdminDTO =
+                    restTemplate.exchange(
+                            restConfig.getSERVER_URL() + restConfig.getADMINS_URI() + "/sensitive/by-email/" + email,
+                            HttpMethod.GET,
+                            new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+                            AdminUpdateForm.class);
+            return responseAdminDTO.getBody();
+        } catch (RestClientException ex) {
+            if (ex instanceof HttpClientErrorException.NotFound) {
+                throw new GlobalNotFoundException("ADMIN");
+            } else {
+                logTechnicalWarning("ADMIN", ex);
+                throw new GlobalRequestFailedException("ADMIN");
+            }
         }
     }
 
-    public AdminDTO update(Admin admin) throws Exception {
-        AdminDTO adminDTO = findByEmail(admin.getEmail());
-        if (adminDTO != null) {
-            return restTemplate.exchange(
-                    restConfig.getSERVER_URL() + restConfig.getADMINS_URI(),
-                    HttpMethod.PUT,
-                    new HttpEntity<>(admin, restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
-                    AdminDTO.class).getBody();
-        } else {
-            throw new GlobalNotFoundException("ADMIN");
+    public AdminDTO update(AdminUpdateForm adminUpdateForm) throws Exception {
+        try {
+            ResponseEntity<AdminDTO> responseAdminDTO =
+                    restTemplate.exchange(
+                            restConfig.getSERVER_URL() + restConfig.getADMINS_URI(),
+                            HttpMethod.PUT,
+                            new HttpEntity<>(adminUpdateForm, restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+                            AdminDTO.class);
+            return responseAdminDTO.getBody();
+        } catch (RestClientException ex) {
+            if (ex instanceof HttpClientErrorException.NotFound) {
+                throw new GlobalNotFoundException("ADMIN");
+            } else if (ex instanceof HttpClientErrorException.BadRequest && (causedByInvalid(ex) || causedByDuplicate(ex))) {
+                throw new Exception(parseInvalidOrDuplicate(ex));
+            } else {
+                logTechnicalWarning("ADMIN", ex);
+                throw new GlobalRequestFailedException("ADMIN");
+            }
         }
     }
 
@@ -151,15 +165,35 @@ public class AdminService implements UserDetailsService {
         return admin;
     }
 
-    private boolean causedByInvalidOrDuplicate(Exception ex) {
-        return ex.getMessage().contains("VALIDATION ERROR IN FIELD") || ex.getMessage().contains("Duplicate entry");
+    private boolean causedByInvalid(Exception ex) {
+        return ex.getMessage().contains("VALIDATION ERROR IN FIELD");
     }
 
-    private String parseInvalidOrDuplicate(String message) {
-        if (message != null && message.contains("VALIDATION ERROR IN FIELD")) {
-            return getInvalidMessages(message);
-        } else if (message != null && message.contains("Duplicate entry")) {
-            return getDuplicateMessage(message);
+    private boolean causedByDuplicate(Exception ex) {
+        return ex.getMessage().contains("Duplicate entry");
+    }
+
+    private String parseInvalid(Exception ex) {
+        if (causedByInvalid(ex)) {
+            return getInvalidMessages(ex.getMessage());
+        } else {
+            return null;
+        }
+    }
+
+    private String parseDuplicate(Exception ex) {
+        if (causedByDuplicate(ex)) {
+            return getDuplicateMessage(ex.getMessage());
+        } else {
+            return null;
+        }
+    }
+
+    private String parseInvalidOrDuplicate(Exception ex) {
+        if (causedByInvalid(ex)) {
+            return getInvalidMessages(ex.getMessage());
+        } else if (causedByDuplicate(ex)) {
+            return getDuplicateMessage(ex.getMessage());
         } else {
             return null;
         }
@@ -182,6 +216,7 @@ public class AdminService implements UserDetailsService {
     }
 
     private void logTechnicalWarning(String entityName, Exception ex) {
-        logger.warn("TECHNICAL REST EXCEPTION FOR " + entityName + ": \"" + ex.getMessage() + "\"");
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        logger.warn("TECHNICAL REST EXCEPTION IN REQUEST BY \"" + userEmail + "\" FOR ENTITY \"" + entityName + "\": \"" + ex.getMessage() + "\"");
     }
 }

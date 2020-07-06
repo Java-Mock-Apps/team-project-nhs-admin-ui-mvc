@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ro.iteahome.nhs.adminui.config.rest.RestConfig;
 import ro.iteahome.nhs.adminui.exception.business.GlobalNotFoundException;
-import ro.iteahome.nhs.adminui.model.form.RoleCreationForm;
 import ro.iteahome.nhs.adminui.model.dto.RoleDTO;
 import ro.iteahome.nhs.adminui.model.entity.Role;
+import ro.iteahome.nhs.adminui.model.form.RoleCreationForm;
 
 @Service
 public class RoleService {
