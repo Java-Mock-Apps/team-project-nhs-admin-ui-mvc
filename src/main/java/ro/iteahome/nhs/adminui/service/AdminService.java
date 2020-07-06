@@ -143,11 +143,11 @@ public class AdminService implements UserDetailsService {
         }
     }
 
-    public AdminDTO deleteByEmail(AdminEmailForm adminEmailForm) throws Exception {
+    public AdminDTO deleteByEmail(String email) throws Exception {
         try {
             ResponseEntity<AdminDTO> responseAdminDTO =
                     restTemplate.exchange(
-                            restConfig.getSERVER_URL() + restConfig.getADMINS_URI() + "/by-email/" + adminEmailForm.getEmail(),
+                            restConfig.getSERVER_URL() + restConfig.getADMINS_URI() + "/by-email/" + email,
                             HttpMethod.DELETE,
                             new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
                             AdminDTO.class);

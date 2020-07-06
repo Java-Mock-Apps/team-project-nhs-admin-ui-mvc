@@ -114,13 +114,13 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/delete-by-email")
+    @PostMapping("/deleted-admin")
     public String deleteByEmail(@Valid AdminEmailForm adminEmailForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "admin/delete-form";
         } else {
             try {
-                model.addAttribute("adminDTO", adminService.deleteByEmail(adminEmailForm));
+                model.addAttribute("adminDTO", adminService.deleteByEmail(adminEmailForm.getEmail()));
                 return "admin/home-admin";
             } catch (Exception ex) {
                 model.addAttribute("errorMessage", ex.getMessage());

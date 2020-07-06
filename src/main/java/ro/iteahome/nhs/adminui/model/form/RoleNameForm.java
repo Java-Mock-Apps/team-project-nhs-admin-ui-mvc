@@ -2,7 +2,7 @@ package ro.iteahome.nhs.adminui.model.form;
 
 import javax.validation.constraints.NotEmpty;
 
-public class RoleForm {
+public class RoleNameForm {
 
 // FIELDS: -------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +13,7 @@ public class RoleForm {
 
 // METHODS: ------------------------------------------------------------------------------------------------------------
 
-    public RoleForm() {
+    public RoleNameForm() {
     }
 
     public String getName() {

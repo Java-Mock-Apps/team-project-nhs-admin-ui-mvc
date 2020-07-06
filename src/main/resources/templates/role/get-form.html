@@ -21,7 +21,7 @@
             <span th:if="${errorMessage != null}" th:text="*{errorMessage}"></span>
             <!-- TODO: Incorporate this error message graphically, somewhere. -->
 
-            <form class="form-nhs" method="GET" th:action="@{/roles/by-name}" th:object="${roleForm}">
+            <form class="form-nhs" method="GET" th:action="@{/roles/by-name}" th:object="${roleNameForm}">
 
                 <div class="form-label-group">
                     <input id="name" name="name" th:field="*{name}" type="text" class="form-control"

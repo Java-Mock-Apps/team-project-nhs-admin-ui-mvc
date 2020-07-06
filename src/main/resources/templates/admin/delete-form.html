@@ -22,7 +22,7 @@
             <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
             <h1 class="h3 mb-3 font-weight-normal">Delete Admin form</h1>
 
-            <form class="form-nhs" method="POST" th:action="@{/admins/delete-by-email}" th:object="${adminEmailForm}">
+            <form class="form-nhs" method="POST" th:action="@{/admins/deleted-admin}" th:object="${adminEmailForm}">
 
                 <div class="form-label-group">
                     <input id="email" name="email" th:field="*{email}" type="text" class="form-control"

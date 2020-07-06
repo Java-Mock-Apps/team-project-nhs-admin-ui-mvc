@@ -15,7 +15,7 @@ import ro.iteahome.nhs.adminui.exception.technical.GlobalRequestFailedException;
 import ro.iteahome.nhs.adminui.model.dto.RoleDTO;
 import ro.iteahome.nhs.adminui.model.dto.RoleDTO;
 import ro.iteahome.nhs.adminui.model.entity.Role;
-import ro.iteahome.nhs.adminui.model.form.RoleForm;
+import ro.iteahome.nhs.adminui.model.form.RoleNameForm;
 import ro.iteahome.nhs.adminui.model.form.RoleUpdateForm;
 
 @Service
@@ -37,8 +37,8 @@ public class RoleService {
 
 // C.R.U.D. METHODS: ---------------------------------------------------------------------------------------------------
 
-    public RoleDTO add(RoleForm roleForm) throws Exception {
-        Role role = modelMapper.map(roleForm, Role.class);
+    public RoleDTO add(RoleNameForm roleNameForm) throws Exception {
+        Role role = modelMapper.map(roleNameForm, Role.class);
         try {
             ResponseEntity<RoleDTO> responseRoleDTO =
                     restTemplate.exchange(
@@ -76,21 +76,6 @@ public class RoleService {
         }
     }
 
-//    public RoleDTO update(RoleUpdateForm roleUpdateForm) {
-//        RoleDTO roleDTO = findByName(roleUpdateForm.getName());
-//        if (roleDTO != null) {
-//            ResponseEntity<RoleDTO> roleResponse =
-//                    restTemplate.exchange(
-//                            restConfig.getSERVER_URL() + restConfig.getROLES_URI(),
-//                            HttpMethod.PUT,
-//                            new HttpEntity<>(roleUpdateForm, restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
-//                            RoleDTO.class);
-//            return roleResponse.getBody();
-//        } else {
-//            throw new GlobalNotFoundException("ROLE");
-//        }
-//    }
-
     public RoleDTO update(RoleUpdateForm roleUpdateForm) throws Exception {
         try {
             ResponseEntity<RoleDTO> responseRoleDTO =
@@ -112,18 +97,39 @@ public class RoleService {
         }
     }
 
-    public RoleDTO deleteByName(String name) {
-        RoleDTO roleDTO = findByName(name);
-        if (roleDTO != null) {
-            ResponseEntity<RoleDTO> roleResponse =
+//    public RoleDTO deleteByName(String name) {
+//        RoleDTO roleDTO = findByName(name);
+//        if (roleDTO != null) {
+//            ResponseEntity<RoleDTO> roleResponse =
+//                    restTemplate.exchange(
+//                            restConfig.getSERVER_URL() + restConfig.getROLES_URI() + "/by-name/" + name,
+//                            HttpMethod.DELETE,
+//                            new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+//                            RoleDTO.class);
+//            return roleResponse.getBody();
+//        } else {
+//            throw new GlobalNotFoundException("ROLE");
+//        }
+//    }
+
+    public RoleDTO deleteByName(String name) throws Exception {
+        try {
+            ResponseEntity<RoleDTO> responseRoleDTO =
                     restTemplate.exchange(
                             restConfig.getSERVER_URL() + restConfig.getROLES_URI() + "/by-name/" + name,
                             HttpMethod.DELETE,
                             new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
                             RoleDTO.class);
-            return roleResponse.getBody();
-        } else {
-            throw new GlobalNotFoundException("ROLE");
+            return responseRoleDTO.getBody();
+        } catch (RestClientException ex) {
+            if (ex instanceof HttpClientErrorException.NotFound) {
+                throw new GlobalNotFoundException("ROLE");
+            } else if (ex instanceof HttpClientErrorException.BadRequest && serviceUtil.causedByInvalid(ex)) {
+                throw new Exception(serviceUtil.parseInvalid(ex));
+            } else {
+                serviceUtil.logTechnicalWarning("ROLE", ex);
+                throw new GlobalRequestFailedException("ROLE");
+            }
         }
     }
 }

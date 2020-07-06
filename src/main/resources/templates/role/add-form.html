@@ -17,7 +17,7 @@
         <span th:if="${errorMessage != null}" th:text="*{errorMessage}"></span>
         <!-- TODO: Incorporate this error message graphically, somewhere. -->
 
-        <form class="form-nhs" method="POST" th:action="@{/roles}" th:object="${roleForm}">
+        <form class="form-nhs" method="POST" th:action="@{/roles}" th:object="${roleNameForm}">
 
             <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
             <h1 class="h3 mb-3 font-weight-normal">Add Role form</h1>
