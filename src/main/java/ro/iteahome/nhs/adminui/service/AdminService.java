@@ -20,7 +20,6 @@ import ro.iteahome.nhs.adminui.exception.technical.GlobalRequestFailedException;
 import ro.iteahome.nhs.adminui.model.dto.AdminDTO;
 import ro.iteahome.nhs.adminui.model.entity.Admin;
 import ro.iteahome.nhs.adminui.model.form.AdminCreationForm;
-import ro.iteahome.nhs.adminui.model.form.AdminEmailForm;
 import ro.iteahome.nhs.adminui.model.form.AdminUpdateForm;
 
 import java.util.List;

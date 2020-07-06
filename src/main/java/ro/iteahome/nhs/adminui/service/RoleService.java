@@ -13,7 +13,6 @@ import ro.iteahome.nhs.adminui.config.rest.RestConfig;
 import ro.iteahome.nhs.adminui.exception.business.GlobalNotFoundException;
 import ro.iteahome.nhs.adminui.exception.technical.GlobalRequestFailedException;
 import ro.iteahome.nhs.adminui.model.dto.RoleDTO;
-import ro.iteahome.nhs.adminui.model.dto.RoleDTO;
 import ro.iteahome.nhs.adminui.model.entity.Role;
 import ro.iteahome.nhs.adminui.model.form.RoleNameForm;
 import ro.iteahome.nhs.adminui.model.form.RoleUpdateForm;
@@ -96,21 +95,6 @@ public class RoleService {
             }
         }
     }
-
-//    public RoleDTO deleteByName(String name) {
-//        RoleDTO roleDTO = findByName(name);
-//        if (roleDTO != null) {
-//            ResponseEntity<RoleDTO> roleResponse =
-//                    restTemplate.exchange(
-//                            restConfig.getSERVER_URL() + restConfig.getROLES_URI() + "/by-name/" + name,
-//                            HttpMethod.DELETE,
-//                            new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
-//                            RoleDTO.class);
-//            return roleResponse.getBody();
-//        } else {
-//            throw new GlobalNotFoundException("ROLE");
-//        }
-//    }
 
     public RoleDTO deleteByName(String name) throws Exception {
         try {

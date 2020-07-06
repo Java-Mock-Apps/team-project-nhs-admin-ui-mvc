@@ -114,12 +114,6 @@ public class RoleController {
         }
     }
 
-//    @PostMapping("/deleted-role")
-//    public ModelAndView deleteByName(RoleDTO roleDTO) {
-//        RoleDTO targetRoleDTO = roleService.deleteByName(roleDTO.getName());
-//        return new ModelAndView("role/home-role").addObject(targetRoleDTO);
-//    }
-
     @PostMapping("/deleted-role")
     public String deleteByName(@Valid RoleNameForm roleNameForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
