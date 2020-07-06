@@ -46,19 +46,40 @@ public class AdminService implements UserDetailsService {
 
 // C.R.U.D. METHODS: ---------------------------------------------------------------------------------------------------
 
+//    public AdminDTO add(AdminCreationForm adminCreationForm) {
+//        Admin admin = buildAdmin(adminCreationForm);
+//        ResponseEntity<AdminDTO> responseAdminDTO =
+//                restTemplate.exchange(
+//                        restConfig.getSERVER_URL() + restConfig.getADMINS_URI(),
+//                        HttpMethod.POST,
+//                        new HttpEntity<>(admin, restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+//                        AdminDTO.class);
+//        AdminDTO adminDTO = responseAdminDTO.getBody();
+//        if (adminDTO != null) {
+//            return responseAdminDTO.getBody();
+//        } else {
+//            throw new GlobalAlreadyExistsException("ADMIN");
+//        }
+//    }
+
     public AdminDTO add(AdminCreationForm adminCreationForm) {
         Admin admin = buildAdmin(adminCreationForm);
-        ResponseEntity<AdminDTO> responseAdminDTO =
-                restTemplate.exchange(
-                        restConfig.getSERVER_URL() + restConfig.getADMINS_URI(),
-                        HttpMethod.POST,
-                        new HttpEntity<>(admin, restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
-                        AdminDTO.class);
-        AdminDTO adminDTO = responseAdminDTO.getBody();
-        if (adminDTO != null) {
+        try {
+            ResponseEntity<AdminDTO> responseAdminDTO =
+                    restTemplate.exchange(
+                            restConfig.getSERVER_URL() + restConfig.getADMINS_URI(),
+                            HttpMethod.POST,
+                            new HttpEntity<>(admin, restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+                            AdminDTO.class);
             return responseAdminDTO.getBody();
-        } else {
-            throw new GlobalAlreadyExistsException("ADMIN");
+        } catch (RestClientException ex) {
+            if (ex instanceof HttpClientErrorException.BadRequest) {
+                logger.warn(ex.getMessage());
+                throw new GlobalAlreadyExistsException("ADMIN");
+            } else {
+                logger.warn("REST EXCEPTION FOR ADMIN: " + ex.getMessage());
+                throw new GlobalRequestFailedException("ADMIN");
+            }
         }
     }
 
