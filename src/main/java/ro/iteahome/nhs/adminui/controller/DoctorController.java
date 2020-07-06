@@ -12,6 +12,7 @@ import ro.iteahome.nhs.adminui.service.InstitutionService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @Controller
 @RequestMapping("/doctors")
@@ -31,18 +32,19 @@ public class DoctorController {
 // LINK "GET" REQUESTS: ------------------------------------------------------------------------------------------------
 
 
-
     @GetMapping("/add-form")
     public ModelAndView showAddForm(Doctor doctor) {
         String[] doctorSpecialties = doctorService.getSpecialties();
-        String[] doctorTitles =  doctorService.getTitles();
+        String[] doctorTitles = doctorService.getTitles();
         return new ModelAndView("doctor/add-form")
-        .addObject("doctorSpecialties",doctorSpecialties)
-                .addObject("doctorTitles",doctorTitles);
+                .addObject("doctorSpecialties", doctorSpecialties)
+                .addObject("doctorTitles", doctorTitles);
     }
 
     @GetMapping("/get-form")
-    public String showGetForm(Doctor doctor) { return "doctor/get-form"; }
+    public String showGetForm(Doctor doctor) {
+        return "doctor/get-form";
+    }
 
     @GetMapping("/update-search-form")
     public String showUpdateSearchForm(Doctor doctor) {
@@ -65,7 +67,7 @@ public class DoctorController {
     }
 
     @GetMapping("/by-cnp")
-    public ModelAndView getByCnp( Doctor doctor) {
+    public ModelAndView getByCnp(Doctor doctor) {
         Doctor databaseDoctor = doctorService.findByCnp(doctor.getCnp());
         return new ModelAndView("doctor/home-doctor").addObject(databaseDoctor);
     }
@@ -77,8 +79,8 @@ public class DoctorController {
         Doctor databaseDoctor = doctorService.findByCnp(doctor.getCnp());
         ArrayList<Institution> institutionArrayList = institutionService.getInstitutions();
         return new ModelAndView("doctor/update-form").addObject(databaseDoctor)
-                .addObject("doctorSpecialties",doctorSpecialties)
-                .addObject("doctorTitles",doctorTitles)
+                .addObject("doctorSpecialties", doctorSpecialties)
+                .addObject("doctorTitles", doctorTitles)
                 .addObject("institutions", institutionArrayList);
     }
 

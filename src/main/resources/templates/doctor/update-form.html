@@ -55,6 +55,14 @@
         <span th:errors="*{title}" th:if="${#fields.hasErrors('title')}"></span>
     </div>
 
+    <div class="form-label-group institutions">
+        <select id="institutions" name="institutions" th:field="*{institutionsCUIs}" class="form-control selectpicker" multiple
+                data-live-search="true">
+            <option th:each="institution : ${institutions}" th:value="${institution.cui}" th:text="${institution.name}"></option>
+        </select>
+        <span th:errors="*{institutions}" th:if="${#fields.hasErrors('institutions')}"></span>
+    </div>
+
     <div class="form-label-group">
         <input id="firstName" name="firstName" th:field="*{firstName}" type="text" class="form-control"
                placeholder="First Name">
@@ -97,6 +105,7 @@
     $('select').selectpicker();
     let titleDiv = $('.title .filter-option-inner-inner');
     let specialtiesDiv = $('.specialties .filter-option-inner-inner');
+    let institutionsDiv = $('.institutions .filter-option-inner-inner');
     let titleArr = [[${doctor.title}]].split(',')
         .map(title => { return title });
     let specialtiesArr = [[${doctor.specialties}]].split(',')
