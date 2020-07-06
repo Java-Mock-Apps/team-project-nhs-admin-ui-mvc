@@ -6,7 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ro.iteahome.nhs.adminui.model.entity.Doctor;
+import ro.iteahome.nhs.adminui.model.entity.Institution;
 import ro.iteahome.nhs.adminui.service.DoctorService;
+import ro.iteahome.nhs.adminui.service.InstitutionService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -19,6 +21,9 @@ public class DoctorController {
 
     @Autowired
     private DoctorService doctorService;
+
+    @Autowired
+    private InstitutionService institutionService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -70,9 +75,11 @@ public class DoctorController {
         String[] doctorSpecialties = doctorService.getSpecialties();
         String[] doctorTitles = doctorService.getTitles();
         Doctor databaseDoctor = doctorService.findByCnp(doctor.getCnp());
+        ArrayList<Institution> institutionArrayList = institutionService.getInstitutions();
         return new ModelAndView("doctor/update-form").addObject(databaseDoctor)
                 .addObject("doctorSpecialties",doctorSpecialties)
-                .addObject("doctorTitles",doctorTitles);
+                .addObject("doctorTitles",doctorTitles)
+                .addObject("institutions", institutionArrayList);
     }
 
     @PostMapping("/updated-doctor")

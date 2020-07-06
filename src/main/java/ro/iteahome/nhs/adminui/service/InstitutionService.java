@@ -1,6 +1,7 @@
 package ro.iteahome.nhs.adminui.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,9 @@ import org.springframework.web.client.RestTemplate;
 import ro.iteahome.nhs.adminui.config.rest.RestConfig;
 import ro.iteahome.nhs.adminui.exception.business.GlobalNotFoundException;
 import ro.iteahome.nhs.adminui.model.entity.Institution;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class InstitutionService {
@@ -86,4 +90,14 @@ public class InstitutionService {
             throw new GlobalNotFoundException("INSTITUTIONS");
         }
     }
+    public ArrayList<Institution> getInstitutions () {
+        ResponseEntity<ArrayList<Institution>> institutionResponseList =
+                restTemplate.exchange(
+                        restConfig.getSERVER_URL() + restConfig.getINSTITUTIONS_URI() + "/all",
+                        HttpMethod.GET,
+                        new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+                        new ParameterizedTypeReference<>() {});
+        return institutionResponseList.getBody();
+    }
+
 }
