@@ -23,7 +23,7 @@
             <form id="form" class="form-nhs" method="GET" th:action="@{/admins/by-email}" th:object="${adminEmailForm}">
 
                 <div class="form-label-group">
-                    <input id="email" name="email" th:field="*{email}" type="email" class="form-control"
+                    <input id="email" name="email" th:field="*{email}" type="text" class="form-control"
                            placeholder="Email">
                     <label for="email">Email</label>
                     <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>

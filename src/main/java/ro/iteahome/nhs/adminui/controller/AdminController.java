@@ -46,6 +46,12 @@ public class AdminController {
         return "admin/update-search-form";
     }
 
+    @GetMapping("/update-form")
+    public ModelAndView showUpdateForm(@Valid AdminEmailForm adminEmailForm) {
+        Admin admin = adminService.findSensitiveByEmail(adminEmailForm.getEmail());
+        return new ModelAndView("admin/update-form").addObject(admin);
+    }
+
     @GetMapping("/delete-form")
     public String showDeleteForm(AdminDTO adminDTO) {
         return "admin/delete-form";
@@ -55,21 +61,27 @@ public class AdminController {
 
     // TODO: Incorporate exception handling. Leaving form fields empty is an issue.
 
-    @PostMapping
-    public ModelAndView add(@Valid AdminCreationForm adminCreationForm) {
-        AdminDTO adminDTO = adminService.add(adminCreationForm);
-        return new ModelAndView("admin/home-admin").addObject(adminDTO);
-    }
-
-//    @GetMapping("/by-id")
-//    public ModelAndView getById(@Valid AdminIdForm adminIdForm) {
-//        try {
-//            AdminDTO databaseAdminDTO = adminService.findById(adminIdForm.getId());
-//            return new ModelAndView("admin/home-admin").addObject(databaseAdminDTO);
-//        } catch (Exception ex) {
-//            return new ModelAndView("admin/get-form").addObject("errorMessage", ex.getMessage());
-//        }
+//    @PostMapping
+//    public ModelAndView add(/*@Valid*/ AdminCreationForm adminCreationForm) throws Exception {
+//        AdminDTO adminDTO = adminService.add(adminCreationForm);
+//        return new ModelAndView("admin/home-admin").addObject(adminDTO);
 //    }
+
+    @PostMapping
+    public String add(@Valid AdminCreationForm adminCreationForm, BindingResult bindingResult, Model model) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return "admin/add-form";
+        } else {
+            try {
+                AdminDTO adminDTO = adminService.add(adminCreationForm);
+                model.addAttribute("adminDTO", adminDTO);
+                return "admin/home-admin";
+            } catch (Exception ex) {
+                model.addAttribute("errorMessage", ex.getMessage());
+                return "admin/add-form";
+            }
+        }
+    }
 
     @GetMapping("/by-email")
     public String getByEmail(@Valid AdminEmailForm adminEmailForm, BindingResult bindingResult, Model model) {
@@ -86,30 +98,11 @@ public class AdminController {
         }
     }
 
-//    @PostMapping("/update-form-by-id")
-//    public ModelAndView showUpdateFormById(AdminIdForm adminIdForm) {
-//        Admin admin = adminService.findSensitiveById(adminIdForm.getId());
-//        return new ModelAndView("admin/update-form").addObject(admin);
-//    }
-
-    @PostMapping("/update-form-by-email")
-    public ModelAndView showUpdateFormByEmail(AdminEmailForm adminEmailForm) {
-        Admin admin = adminService.findSensitiveByEmail(adminEmailForm.getEmail());
-        return new ModelAndView("admin/update-form").addObject(admin);
-    }
-
     @PostMapping("/updated-admin")
     public ModelAndView update(@Valid Admin admin) throws Exception {
         AdminDTO adminDTO = adminService.update(admin);
         return new ModelAndView("admin/home-admin").addObject(adminDTO);
     }
-
-//    @PostMapping("/delete-by-id")
-//    public ModelAndView deleteById(AdminDTO adminDTO) throws Exception {
-//        AdminDTO targetAdminDTO = adminService.findById(adminDTO.getId());
-//        adminService.deleteById(adminDTO.getId());
-//        return new ModelAndView("admin/home-admin").addObject(targetAdminDTO);
-//    }
 
     @PostMapping("/delete-by-email")
     public ModelAndView deleteByEmail(AdminDTO adminDTO) {

@@ -15,12 +15,11 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import ro.iteahome.nhs.adminui.config.rest.RestConfig;
-import ro.iteahome.nhs.adminui.exception.business.GlobalAlreadyExistsException;
 import ro.iteahome.nhs.adminui.exception.business.GlobalNotFoundException;
 import ro.iteahome.nhs.adminui.exception.technical.GlobalRequestFailedException;
-import ro.iteahome.nhs.adminui.model.form.AdminCreationForm;
 import ro.iteahome.nhs.adminui.model.dto.AdminDTO;
 import ro.iteahome.nhs.adminui.model.entity.Admin;
+import ro.iteahome.nhs.adminui.model.form.AdminCreationForm;
 
 import java.util.Optional;
 
@@ -46,23 +45,7 @@ public class AdminService implements UserDetailsService {
 
 // C.R.U.D. METHODS: ---------------------------------------------------------------------------------------------------
 
-//    public AdminDTO add(AdminCreationForm adminCreationForm) {
-//        Admin admin = buildAdmin(adminCreationForm);
-//        ResponseEntity<AdminDTO> responseAdminDTO =
-//                restTemplate.exchange(
-//                        restConfig.getSERVER_URL() + restConfig.getADMINS_URI(),
-//                        HttpMethod.POST,
-//                        new HttpEntity<>(admin, restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
-//                        AdminDTO.class);
-//        AdminDTO adminDTO = responseAdminDTO.getBody();
-//        if (adminDTO != null) {
-//            return responseAdminDTO.getBody();
-//        } else {
-//            throw new GlobalAlreadyExistsException("ADMIN");
-//        }
-//    }
-
-    public AdminDTO add(AdminCreationForm adminCreationForm) {
+    public AdminDTO add(AdminCreationForm adminCreationForm) throws Exception {
         Admin admin = buildAdmin(adminCreationForm);
         try {
             ResponseEntity<AdminDTO> responseAdminDTO =
@@ -73,11 +56,10 @@ public class AdminService implements UserDetailsService {
                             AdminDTO.class);
             return responseAdminDTO.getBody();
         } catch (RestClientException ex) {
-            if (ex instanceof HttpClientErrorException.BadRequest) {
-                logger.warn(ex.getMessage());
-                throw new GlobalAlreadyExistsException("ADMIN");
+            if (ex instanceof HttpClientErrorException.BadRequest && causedByInvalidOrDuplicate(ex)) {
+                throw new Exception(parseInvalidOrDuplicate(ex.getMessage()));
             } else {
-                logger.warn("REST EXCEPTION FOR ADMIN: " + ex.getMessage());
+                logTechnicalWarning("ADMIN", ex);
                 throw new GlobalRequestFailedException("ADMIN");
             }
         }
@@ -96,7 +78,7 @@ public class AdminService implements UserDetailsService {
             if (ex instanceof HttpClientErrorException.NotFound) {
                 throw new GlobalNotFoundException("ADMIN");
             } else {
-                logger.warn("REST EXCEPTION FOR ADMIN: " + ex.getMessage());
+                logTechnicalWarning("ADMIN", ex);
                 throw new GlobalRequestFailedException("ADMIN");
             }
         }
@@ -167,5 +149,39 @@ public class AdminService implements UserDetailsService {
         admin.setStatus(1);
         admin.setRole("ADMIN");
         return admin;
+    }
+
+    private boolean causedByInvalidOrDuplicate(Exception ex) {
+        return ex.getMessage().contains("VALIDATION ERROR IN FIELD") || ex.getMessage().contains("Duplicate entry");
+    }
+
+    private String parseInvalidOrDuplicate(String message) {
+        if (message != null && message.contains("VALIDATION ERROR IN FIELD")) {
+            return getInvalidMessages(message);
+        } else if (message != null && message.contains("Duplicate entry")) {
+            return getDuplicateMessage(message);
+        } else {
+            return null;
+        }
+    }
+
+    private String getInvalidMessages(String message) {
+        StringBuilder parsedMessageBuilder = new StringBuilder();
+        String[] quotedParts = message.split("\"");
+        for (String part : quotedParts) {
+            if (part.contains("INVALID "))
+                parsedMessageBuilder.append(part).append("\n");
+        }
+        return parsedMessageBuilder
+                .delete(parsedMessageBuilder.length() - 2, parsedMessageBuilder.length())
+                .toString();
+    }
+
+    private String getDuplicateMessage(String message) {
+        return "\"" + message.split("\'")[1] + "\" ALREADY EXISTS";
+    }
+
+    private void logTechnicalWarning(String entityName, Exception ex) {
+        logger.warn("TECHNICAL REST EXCEPTION FOR " + entityName + ": \"" + ex.getMessage() + "\"");
     }
 }

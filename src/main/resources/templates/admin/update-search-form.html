@@ -1,54 +1,51 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>NHS Search Admin</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>NHS Search Admin</title>
+        <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
 
+        <!-- Bootstrap core CSS -->
+        <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
+    </head>
 
-    <!-- Bootstrap core CSS -->
-    <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
+    <body class="text-center">
+        <div class="form-nhs">
+            <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
+            <h1 class="h3 mb-3 font-weight-normal">Search Admin form</h1>
 
-</head>
+            <form class="form-nhs" method="GET" th:action="@{/admins/update-form}" th:object="${adminDTO}">
 
-<body class="text-center">
-<div class="form-nhs">
-    <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
-    <h1 class="h3 mb-3 font-weight-normal">Search Admin form</h1>
+                <div class="form-label-group">
+                    <input id="id" name="id" th:field="*{id}" type="number" class="form-control"
+                           placeholder="ID" autofocus>
+                    <!-- TODO: Try to remove number scroll bar. If not, try to stylize it. -->
+                    <span th:errors="*{id}" th:if="${#fields.hasErrors('id')}"></span>
+                    <label for="id">ID</label>
+                </div>
 
-    <form class="form-nhs" method="POST" th:action="@{/admins/update-form-by-id}" th:object="${adminDTO}">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Search Admin</button>
+            </form>
 
+            <form class="form-nhs" method="POST" th:action="@{/admins/update-form-by-email}" th:object="${adminDTO}">
 
-        <div class="form-label-group">
-            <input id="id" name="id" th:field="*{id}" type="number" class="form-control"
-                   placeholder="ID" autofocus>
-            <!-- TODO: Try to remove number scroll bar. If not, try to stylize it. -->
-            <span th:errors="*{id}" th:if="${#fields.hasErrors('id')}"></span>
-            <label for="id">ID</label>
-        </div>
+                <div class="form-label-group">
+                    <input id="email" name="email" th:field="*{email}" type="email" class="form-control"
+                           placeholder="Email">
+                    <span th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></span>
+                    <label for="email">Email</label>
+                </div>
 
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Search Admin</button>
-    </form>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Search Admin</button>
+            </form>
 
-    <form class="form-nhs" method="POST" th:action="@{/admins/update-form-by-email}" th:object="${adminDTO}">
+            <br><br>
+            <a href="/home-initial" class="btn btn-lg btn-secondary btn-block">Go back</a>
+            <br><br>
 
-        <div class="form-label-group">
-            <input id="email" name="email" th:field="*{email}" type="email" class="form-control"
-                   placeholder="Email">
-            <span th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></span>
-            <label for="email">Email</label>
-        </div>
-
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Search Admin</button>
-    </form>
-
-    <br><br>
-    <a href="/home-initial" class="btn btn-lg btn-secondary btn-block">Go back</a>
-    <br><br>
-
-    <p class="mt-5 mb-3 text-muted">&copy; 2020</p></div>
-</body>
+            <p class="mt-5 mb-3 text-muted">&copy; 2020</p></div>
+    </body>
 </html>
