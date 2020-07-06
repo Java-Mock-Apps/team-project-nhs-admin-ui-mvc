@@ -81,14 +81,14 @@ public class DoctorService {
     }
 
     public Doctor update(Doctor newDoctor) {
-        Doctor doctorDTO = findByCnp(newDoctor.getCnp());
-        if (doctorDTO != null) {
+//        Doctor doctorDTO = findByCnp(newDoctor.getCnp());
+        if (newDoctor != null) {
             restTemplate.exchange(
                     restConfig.getSERVER_URL() + restConfig.getDOCTORS_URI(),
                     HttpMethod.PUT,
                     new HttpEntity<>(newDoctor, restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
                     Doctor.class);
-            return findByCnp(doctorDTO.getCnp());
+            return findByCnp(newDoctor.getCnp());
         } else {
             throw new GlobalNotFoundException("DOCTOR");
         }
