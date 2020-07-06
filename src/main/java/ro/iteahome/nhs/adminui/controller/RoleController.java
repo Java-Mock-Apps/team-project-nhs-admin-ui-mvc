@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import ro.iteahome.nhs.adminui.model.dto.RoleDTO;
-import ro.iteahome.nhs.adminui.model.entity.Role;
 import ro.iteahome.nhs.adminui.model.form.RoleForm;
+import ro.iteahome.nhs.adminui.model.form.RoleUpdateForm;
 import ro.iteahome.nhs.adminui.service.RoleService;
 
 import javax.validation.Valid;
@@ -41,8 +41,31 @@ public class RoleController {
     }
 
     @GetMapping("/update-search-form")
-    public String showUpdateSearchForm(RoleDTO roleDTO) {
+    public String showUpdateSearchForm(RoleUpdateForm roleUpdateForm) {
         return "role/update-search-form";
+    }
+
+//    @GetMapping("/update-form-by-name")
+//    public ModelAndView showUpdateFormByName(RoleDTO roleDTO) {
+//        RoleDTO foundRoleDTO = roleService.findByName(roleDTO.getName());
+//        return new ModelAndView("role/update-form").addObject(foundRoleDTO);
+//    }
+
+    @GetMapping("/update-form")
+    public String showUpdateForm(@Valid RoleUpdateForm roleUpdateForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "role/update-search-form";
+        } else {
+            try {
+                RoleDTO targetRoleDTO = roleService.findByName(roleUpdateForm.getName());
+                roleUpdateForm.setId(targetRoleDTO.getId());
+                model.addAttribute("roleUpdateForm", roleUpdateForm);
+                return "role/update-form";
+            } catch (Exception ex) {
+                model.addAttribute("errorMessage", ex.getMessage());
+                return "role/update-search-form";
+            }
+        }
     }
 
     @GetMapping("/delete-form")
@@ -83,17 +106,26 @@ public class RoleController {
         }
     }
 
-    @GetMapping("/update-form-by-name")
-    public ModelAndView showUpdateFormByName(RoleDTO roleDTO) {
-        RoleDTO foundRoleDTO = roleService.findByName(roleDTO.getName());
-        return new ModelAndView("role/update-form").addObject(foundRoleDTO);
-    }
+//    @PostMapping("/updated-role")
+//    public ModelAndView update(RoleDTO foundRoleDTO) {
+//        Role role = modelMapper.map(foundRoleDTO, Role.class);
+//        RoleDTO roleDTO = roleService.update(role);
+//        return new ModelAndView("role/home-role").addObject(roleDTO);
+//    }
 
     @PostMapping("/updated-role")
-    public ModelAndView update(RoleDTO foundRoleDTO) {
-        Role role = modelMapper.map(foundRoleDTO, Role.class);
-        RoleDTO roleDTO = roleService.update(role);
-        return new ModelAndView("role/home-role").addObject(roleDTO);
+    public String update(@Valid RoleUpdateForm roleUpdateForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "role/update-form";
+        } else {
+            try {
+                model.addAttribute("roleDTO", roleService.update(roleUpdateForm));
+                return "role/home-role";
+            } catch (Exception ex) {
+                model.addAttribute("errorMessage", ex.getMessage());
+                return "role/update-form";
+            }
+        }
     }
 
     @PostMapping("/deleted-role-name")
