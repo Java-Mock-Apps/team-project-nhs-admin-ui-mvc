@@ -44,6 +44,7 @@
         <th>MEDICAL LICENSE</th>
         <th>PHONE NUMBER</th>
         <th>SPECIALTIES</th>
+        <th>INSTITUTIONS</th>
         <th>TITLE</th>
     </tr>
     </thead>
@@ -56,6 +57,7 @@
         <td th:text="${doctor.licenseNo}"></td>
         <td th:text="${doctor.phoneNoRo}"></td>
         <td th:text="${doctor.specialties}"></td>
+        <td th:text="${doctor.institutions}"></td>
         <td th:text="${doctor.title}"></td>
     </tr>
     </tbody>
@@ -64,8 +66,8 @@
 <a class="btn btn-lg btn-primary btn-block form-nhs " style="padding : 0.5rem 1rem" href="/home-initial">Clear
     Result</a>
 <br>
-<a href="/logout" class="btn btn-md btn-danger btn-block"
-   style="width: 50%; margin-left:25%; margin-right: 25% ">Logout</a>
+<a href="/logout" class="btn btn-lg btn-danger btn-block">Logout</a>
+
 <br>
 <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
 
