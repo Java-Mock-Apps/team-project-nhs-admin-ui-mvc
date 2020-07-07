@@ -13,10 +13,7 @@ import ro.iteahome.nhs.adminui.config.rest.RestConfig;
 import ro.iteahome.nhs.adminui.exception.business.GlobalNotFoundException;
 import ro.iteahome.nhs.adminui.model.dto.ClientAppCredentials;
 import ro.iteahome.nhs.adminui.model.dto.ClientAppDTO;
-import ro.iteahome.nhs.adminui.model.dto.RoleCreationDTO;
-import ro.iteahome.nhs.adminui.model.dto.RoleDTO;
 import ro.iteahome.nhs.adminui.model.entity.ClientApp;
-import ro.iteahome.nhs.adminui.model.entity.Role;
 
 import javax.validation.Valid;
 import java.util.Base64;
@@ -53,7 +50,7 @@ public class ClientAppService {
 
 // C.R.U.D. METHODS: ---------------------------------------------------------------------------------------------------
 
-    public ClientApp add(ClientAppDTO clientAppDTO, String  roleName) {
+    public ClientApp add(ClientAppDTO clientAppDTO, String roleName) {
         ClientAppCredentials clientAppCredentials = new ClientAppCredentials(
                 clientAppDTO.getName(),
                 clientAppDTO.getPassword()
@@ -62,7 +59,7 @@ public class ClientAppService {
                 restTemplate.exchange(
                         restConfig.getSERVER_URL() + restConfig.getCLIENT_APPS_URI() + "/with-role-name/" + roleName,
                         HttpMethod.POST,
-                        new HttpEntity<>(clientAppDTO,restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+                        new HttpEntity<>(clientAppDTO, restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
                         ClientApp.class);
         return clientAppResponse.getBody();
     }
@@ -97,14 +94,14 @@ public class ClientAppService {
         }
     }
 
-    public ClientApp update(@Valid ClientApp clientApp,String roleName) {
+    public ClientApp update(@Valid ClientApp clientApp, String roleName) {
         ClientApp databaseClientApp = findById(clientApp.getId());
         if (databaseClientApp != null) {
             ResponseEntity<ClientApp> clientAppResponse =
                     restTemplate.exchange(
                             restConfig.getSERVER_URL() + restConfig.getCLIENT_APPS_URI() + "/with-role-name/" + roleName,
                             HttpMethod.PUT,
-                            new HttpEntity<>(clientApp,restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+                            new HttpEntity<>(clientApp, restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
                             ClientApp.class);
             return clientAppResponse.getBody();
         } else {
@@ -117,7 +114,7 @@ public class ClientAppService {
         if (databaseClientApp != null) {
             ResponseEntity<ClientApp> clientAppResponse =
                     restTemplate.exchange(
-                            restConfig.getSERVER_URL() + restConfig.getCLIENT_APPS_URI() +"/role/?clientAppId=" + clientApp.getId()+ "&roleId=" + roleId,
+                            restConfig.getSERVER_URL() + restConfig.getCLIENT_APPS_URI() + "/role/?clientAppId=" + clientApp.getId() + "&roleId=" + roleId,
                             HttpMethod.PUT,
                             new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
                             ClientApp.class);

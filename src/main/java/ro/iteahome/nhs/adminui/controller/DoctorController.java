@@ -88,7 +88,7 @@ public class DoctorController {
 
     @PostMapping("/updated-doctor")
     public ModelAndView update(@Valid Doctor doctor) {
-        if (doctor.getInstitutionCUIs()==null)
+        if (doctor.getInstitutionCUIs() == null)
             doctor.setInstitutionCUIs("");
         Doctor databaseDoctor = doctorService.update(doctor);
         databaseDoctor.setInstitutionCUIs(databaseDoctor.getInstitutions().stream()

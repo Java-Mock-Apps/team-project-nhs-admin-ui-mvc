@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import ro.iteahome.nhs.adminui.model.dto.ClientAppDTO;
-import ro.iteahome.nhs.adminui.model.dto.RoleCreationDTO;
 import ro.iteahome.nhs.adminui.model.dto.RoleDTO;
 import ro.iteahome.nhs.adminui.model.entity.ClientApp;
-import ro.iteahome.nhs.adminui.model.entity.Institution;
 import ro.iteahome.nhs.adminui.model.entity.Role;
+import ro.iteahome.nhs.adminui.model.form.RoleUpdateForm;
 import ro.iteahome.nhs.adminui.service.ClientAppService;
 import ro.iteahome.nhs.adminui.service.RoleService;
 
@@ -31,7 +30,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/client-apps")
 public class ClientAppController {
 
-// DEPENDENCIES: -------------------------------------------------------------------------------------------------------
+    // DEPENDENCIES: -------------------------------------------------------------------------------------------------------
     @Autowired
     private ClientAppService clientAppService;
 
@@ -52,7 +51,9 @@ public class ClientAppController {
     }
 
     @GetMapping("/get-form")
-    public String showGetForm(ClientApp clientApp) { return "client-app/get-form"; }
+    public String showGetForm(ClientApp clientApp) {
+        return "client-app/get-form";
+    }
 
     @GetMapping("/update-search-form")
     public String showUpdateSearchForm(ClientApp clientApp) {
@@ -71,7 +72,7 @@ public class ClientAppController {
     @PostMapping
     public ModelAndView add(ClientAppDTO clientAppDTO) {
         RoleDTO databaseRole = roleService.findByName(clientAppDTO.getSelectedRoleName());
-        ClientApp databaseClientApp = clientAppService.add(clientAppDTO,databaseRole.getName());
+        ClientApp databaseClientApp = clientAppService.add(clientAppDTO, databaseRole.getName());
         return new ModelAndView("client-app/home-client-app").addObject(databaseClientApp);
     }
 
@@ -90,7 +91,7 @@ public class ClientAppController {
     @GetMapping("/update-form-by-name")
     public ModelAndView showUpdateFormByName(ClientApp clientApp) {
         ClientApp databaseClientApp = clientAppService.findByName(clientApp.getName());
-        ClientAppDTO clientAppDTO = modelMapper.map(databaseClientApp,ClientAppDTO.class);
+        ClientAppDTO clientAppDTO = modelMapper.map(databaseClientApp, ClientAppDTO.class);
         List<Role> rolesList = roleService.getRolesList();
         clientAppDTO.setRolesList(rolesList);
         return new ModelAndView("client-app/update-form").addObject(clientAppDTO);
@@ -99,15 +100,15 @@ public class ClientAppController {
     @PostMapping("/updated-client-app")
     public ModelAndView update(ClientAppDTO clientAppDTO) {
         RoleDTO databaseRole = roleService.findByName(clientAppDTO.getSelectedRoleName());
-        ClientApp clientApp = modelMapper.map(clientAppDTO,ClientApp.class);
-        ClientApp databaseClientApp = clientAppService.update(clientApp,databaseRole.getName());
+        ClientApp clientApp = modelMapper.map(clientAppDTO, ClientApp.class);
+        ClientApp databaseClientApp = clientAppService.update(clientApp, databaseRole.getName());
         return new ModelAndView("client-app/home-client-app").addObject(databaseClientApp);
     }
 
     @PostMapping("/updated-client-app/role")
-    public ModelAndView updateRole(ClientApp clientApp,@Valid RoleCreationDTO roleCreationDTO) {
-        RoleDTO databaseRole = roleService.findByName(roleCreationDTO.getName());
-        ClientApp databaseClientApp = clientAppService.updateRole(clientApp,databaseRole.getId());
+    public ModelAndView updateRole(ClientApp clientApp, @Valid RoleUpdateForm roleroleUpdateForm) {
+        RoleDTO databaseRole = roleService.findByName(roleroleUpdateForm.getName());
+        ClientApp databaseClientApp = clientAppService.updateRole(clientApp, databaseRole.getId());
         return new ModelAndView("client-app/home-client-app").addObject(databaseClientApp)
                 .addObject(databaseRole);
     }

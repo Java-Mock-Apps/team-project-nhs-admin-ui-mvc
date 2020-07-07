@@ -1,7 +1,5 @@
 package ro.iteahome.nhs.adminui.model.entity;
 
-import java.util.Set;
-
 public class ClientApp {
 
     private int id;

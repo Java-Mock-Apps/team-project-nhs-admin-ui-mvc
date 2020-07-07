@@ -2,9 +2,7 @@ package ro.iteahome.nhs.adminui.model.dto;
 
 import ro.iteahome.nhs.adminui.model.entity.Role;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Set;
 
 public class ClientAppDTO {
 
