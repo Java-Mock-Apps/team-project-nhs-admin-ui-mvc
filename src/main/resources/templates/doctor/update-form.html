@@ -59,6 +59,7 @@
         <select id="institutions" name="institutions" th:field="*{institutionCUIs}" class="form-control selectpicker"
                 multiple
                 data-live-search="true">
+            <option value="" selected disabled>Please select an institution</option>
             <option th:each="institution : ${institutions}" th:value="${institution.cui}"
                     th:text="${institution.name}"></option>
         </select>
@@ -123,6 +124,10 @@
         $('.title .selectpicker').selectpicker('val', titleArr);
     } else
         titleDiv.html("Please select a title");
+
+    $('.institutions .filter-option-inner-inner').html("Please select an institution");
+
+
 </script>
 
 </body>
