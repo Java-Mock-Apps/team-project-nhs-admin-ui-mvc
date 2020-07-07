@@ -157,7 +157,7 @@ public class InstitutionService {
                         restConfig.getSERVER_URL() + restConfig.getINSTITUTIONS_URI() + "/all",
                         HttpMethod.GET,
                         new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
-                        new ParameterizedTypeReference<>() {
+                        new ParameterizedTypeReference<ArrayList<Institution>>() {
                         });
         return institutionResponseList.getBody();
     }
