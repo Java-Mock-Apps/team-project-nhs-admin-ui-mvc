@@ -6,15 +6,16 @@
         <title>NHS Delete Institution</title>
         <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
 
-
         <!-- Bootstrap core CSS -->
         <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
+
         <!-- Custom styles for this template -->
         <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
-
     </head>
 
     <body class="text-center">
+        <span th:if="${errorMessage != null}" th:text="*{errorMessage}"></span>
+        <!-- TODO: Incorporate this error message graphically, somewhere. -->
 
         <div class="form-nhs">
 
@@ -22,7 +23,7 @@
             <h1 class="h3 mb-3 font-weight-normal">Delete Institution form</h1>
 
             <form class="form-nhs" method="POST" th:action="@{/medical-institutions/delete-by-cui}"
-                  th:object="${institution}">
+                  th:object="${institutionCuiForm}">
 
                 <div class="form-label-group">
                     <input id="cui" name="cui" th:field="*{cui}" type="text" class="form-control"

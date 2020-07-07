@@ -2,25 +2,23 @@ package ro.iteahome.nhs.adminui.model.form;
 
 import javax.validation.constraints.NotEmpty;
 
-public class RoleNameForm {
+public class InstitutionCuiForm {
 
 // FIELDS: -------------------------------------------------------------------------------------------------------------
 
-    // NO ID.
-
-    @NotEmpty(message = "ROLE NAME CANNOT BE EMPTY")
-    private String name;
+    @NotEmpty(message = "CUI CANNOT BE EMPTY")
+    private String cui;
 
 // METHODS: ------------------------------------------------------------------------------------------------------------
 
-    public RoleNameForm() {
+    public InstitutionCuiForm() {
     }
 
-    public String getName() {
-        return name;
+    public String getCui() {
+        return cui;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCui(String cui) {
+        this.cui = cui;
     }
 }

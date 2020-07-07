@@ -1,14 +1,22 @@
 package ro.iteahome.nhs.adminui.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import ro.iteahome.nhs.adminui.config.rest.RestConfig;
 import ro.iteahome.nhs.adminui.exception.business.GlobalNotFoundException;
-import ro.iteahome.nhs.adminui.model.entity.Institution;
+import ro.iteahome.nhs.adminui.exception.technical.GlobalRequestFailedException;
+import ro.iteahome.nhs.adminui.model.dto.InstitutionDTO;
+import ro.iteahome.nhs.adminui.model.form.InstitutionCreationForm;
+import ro.iteahome.nhs.adminui.model.form.InstitutionUpdateForm;
+
+import java.util.List;
 
 @Service
 public class InstitutionService {
@@ -21,69 +29,123 @@ public class InstitutionService {
     @Autowired
     private RestConfig restConfig;
 
+    @Autowired
+    private ServiceUtil serviceUtil;
+
 // C.R.U.D. METHODS: ---------------------------------------------------------------------------------------------------
 
-    public Institution add(Institution institution) {
-        ResponseEntity<Institution> institutionResponse =
-                restTemplate.exchange(
-                        restConfig.getSERVER_URL() + restConfig.getINSTITUTIONS_URI(),
-                        HttpMethod.POST,
-                        new HttpEntity<>(institution, restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
-                        Institution.class);
-        return institutionResponse.getBody();
-    }
-
-    public String[] getInstitutionTypes() {
-        ResponseEntity<String[]> institutionResponse =
-                restTemplate.exchange(
-                        restConfig.getSERVER_URL() + restConfig.getINSTITUTIONS_URI() + "/type",
-                        HttpMethod.GET,
-                        new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
-                        String[].class);
-        return institutionResponse.getBody();
-    }
-
-    public Institution findByCui(String cui) {
-        ResponseEntity<Institution> institutionResponse =
-                restTemplate.exchange(
-                        restConfig.getSERVER_URL() + restConfig.getINSTITUTIONS_URI() + "/by-cui/" + cui,
-                        HttpMethod.GET,
-                        new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
-                        Institution.class);
-        Institution institutionDTO = institutionResponse.getBody();
-        if (institutionDTO != null) {
-            return institutionDTO;
-        } else {
-            throw new GlobalNotFoundException("INSTITUTION");
+    public InstitutionDTO add(InstitutionCreationForm institutionCreationForm) throws Exception {
+        try {
+            ResponseEntity<InstitutionDTO> responseInstitutionDTO =
+                    restTemplate.exchange(
+                            restConfig.getSERVER_URL() + restConfig.getINSTITUTIONS_URI(),
+                            HttpMethod.POST,
+                            new HttpEntity<>(institutionCreationForm, restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+                            InstitutionDTO.class);
+            return responseInstitutionDTO.getBody();
+        } catch (RestClientException ex) {
+            if ((ex instanceof HttpClientErrorException.BadRequest && serviceUtil.causedByInvalid(ex)) ||
+                    (ex instanceof HttpClientErrorException.BadRequest && serviceUtil.causedByDuplicate(ex))) {
+                throw new Exception(serviceUtil.parseInvalidOrDuplicate(ex));
+            } else {
+                serviceUtil.logTechnicalWarning("INSTITUTION", ex);
+                throw new GlobalRequestFailedException("INSTITUTION");
+            }
         }
     }
 
-    public Institution update(Institution newInstitution) {
-        Institution institutionDTO = findByCui(newInstitution.getCui());
-        if (institutionDTO != null) {
-            restTemplate.exchange(
-                    restConfig.getSERVER_URL() + restConfig.getINSTITUTIONS_URI(),
-                    HttpMethod.PUT,
-                    new HttpEntity<>(newInstitution, restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
-                    Institution.class);
-            return findByCui(newInstitution.getCui());
-        } else {
-            throw new GlobalNotFoundException("INSTITUTION");
+    public List<InstitutionDTO> findAll() {
+        try {
+            ResponseEntity<List<InstitutionDTO>> responseInstitutionDTOList =
+                    restTemplate.exchange(
+                            restConfig.getSERVER_URL() + restConfig.getINSTITUTIONS_URI() + "/all",
+                            HttpMethod.GET,
+                            new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+                            new ParameterizedTypeReference<List<InstitutionDTO>>() {
+                            });
+            return responseInstitutionDTOList.getBody();
+        } catch (RestClientException ex) {
+            serviceUtil.logTechnicalWarning("INSTITUTION", ex);
+            throw new GlobalRequestFailedException("INSTITUTION");
         }
     }
 
-    public Institution deleteByCui(String cui) {
-        Institution institutionDTO = findByCui(cui);
-        if (institutionDTO != null) {
-            ResponseEntity<Institution> institutionResponse =
+    public InstitutionDTO findByCui(String cui) {
+        try {
+            ResponseEntity<InstitutionDTO> responseInstitutionDTO =
+                    restTemplate.exchange(
+                            restConfig.getSERVER_URL() + restConfig.getINSTITUTIONS_URI() + "/by-cui/" + cui,
+                            HttpMethod.GET,
+                            new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+                            InstitutionDTO.class);
+            return responseInstitutionDTO.getBody();
+        } catch (RestClientException ex) {
+            if (ex instanceof HttpClientErrorException.NotFound) {
+                throw new GlobalNotFoundException("INSTITUTION");
+            } else {
+                serviceUtil.logTechnicalWarning("INSTITUTION", ex);
+                throw new GlobalRequestFailedException("INSTITUTION");
+            }
+        }
+
+    }
+
+    public InstitutionDTO update(InstitutionUpdateForm institutionUpdateForm) throws Exception {
+        try {
+            ResponseEntity<InstitutionDTO> responseInstitutionDTO =
+                    restTemplate.exchange(
+                            restConfig.getSERVER_URL() + restConfig.getINSTITUTIONS_URI(),
+                            HttpMethod.PUT,
+                            new HttpEntity<>(institutionUpdateForm, restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+                            InstitutionDTO.class);
+            return responseInstitutionDTO.getBody();
+        } catch (RestClientException ex) {
+            if (ex instanceof HttpClientErrorException.NotFound) {
+                throw new GlobalNotFoundException("INSTITUTION");
+            } else if (ex instanceof HttpClientErrorException.BadRequest && (serviceUtil.causedByInvalid(ex) || serviceUtil.causedByDuplicate(ex))) {
+                throw new Exception(serviceUtil.parseInvalidOrDuplicate(ex));
+            } else {
+                serviceUtil.logTechnicalWarning("INSTITUTION", ex);
+                throw new GlobalRequestFailedException("INSTITUTION");
+            }
+        }
+    }
+
+    public InstitutionDTO deleteByCui(String cui) throws Exception {
+        try {
+            ResponseEntity<InstitutionDTO> responseInstitutionDTO =
                     restTemplate.exchange(
                             restConfig.getSERVER_URL() + restConfig.getINSTITUTIONS_URI() + "/by-cui/" + cui,
                             HttpMethod.DELETE,
                             new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
-                            Institution.class);
+                            InstitutionDTO.class);
+            return responseInstitutionDTO.getBody();
+        } catch (RestClientException ex) {
+            if (ex instanceof HttpClientErrorException.NotFound) {
+                throw new GlobalNotFoundException("INSTITUTION");
+            } else if (ex instanceof HttpClientErrorException.BadRequest && serviceUtil.causedByInvalid(ex)) {
+                throw new Exception(serviceUtil.parseInvalid(ex));
+            } else {
+                serviceUtil.logTechnicalWarning("INSTITUTION", ex);
+                throw new GlobalRequestFailedException("INSTITUTION");
+            }
+        }
+    }
+
+// OTHER METHODS: ---------------------------------------------------------------------------------------------------
+
+    public String[] getInstitutionTypes() {
+        try {
+            ResponseEntity<String[]> institutionResponse =
+                    restTemplate.exchange(
+                            restConfig.getSERVER_URL() + restConfig.getINSTITUTIONS_URI() + "/types",
+                            HttpMethod.GET,
+                            new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+                            String[].class);
             return institutionResponse.getBody();
-        } else {
-            throw new GlobalNotFoundException("INSTITUTIONS");
+        } catch (RestClientException ex) {
+            serviceUtil.logTechnicalWarning("INSTITUTION", ex);
+            throw new GlobalRequestFailedException("INSTITUTION");
         }
     }
 }

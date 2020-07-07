@@ -16,10 +16,10 @@ public class AdminCreationForm {
     @Pattern(regexp = "((?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,32})", message = "INVALID PASSWORD")
     private String password;
 
-    @NotBlank(message = "FIRST NAME CANNOT BE EMPTY.")
+    @NotBlank(message = "FIRST NAME CANNOT BE EMPTY")
     private String firstName;
 
-    @NotBlank(message = "LAST NAME CANNOT BE EMPTY.")
+    @NotBlank(message = "LAST NAME CANNOT BE EMPTY")
     private String lastName;
 
     @Pattern(regexp = "^0040\\d{9}$", message = "INVALID PHONE NUMBER")

@@ -20,21 +20,21 @@ public class Admin implements UserDetails {
 
     private int id;
 
-    @NotNull(message = "EMAIL CANNOT BE NULL.")
+    @NotNull(message = "EMAIL CANNOT BE NULL")
     @Email(regexp = ".+@.+\\.\\w+", message = "INVALID EMAIL ADDRESS")
     private String email;
 
-    @NotNull(message = "PASSWORD CANNOT BE NULL.")
+    @NotNull(message = "PASSWORD CANNOT BE NULL")
     @Pattern(regexp = "((?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,32})", message = "INVALID PASSWORD")
     private String password;
 
-    @NotNull(message = "FIRST NAME CANNOT BE NULL.")
+    @NotNull(message = "FIRST NAME CANNOT BE NULL")
     private String firstName;
 
-    @NotNull(message = "LAST NAME CANNOT BE NULL.")
+    @NotNull(message = "LAST NAME CANNOT BE NULL")
     private String lastName;
 
-    @NotNull(message = "PHONE NUMBER NAME CANNOT BE NULL.")
+    @NotNull(message = "PHONE NUMBER NAME CANNOT BE NULL")
     @Pattern(regexp = "^0040\\d{9}$", message = "INVALID PHONE NUMBER")
     private String phoneNoRo;
 

@@ -1,33 +1,30 @@
-package ro.iteahome.nhs.adminui.model.entity;
+package ro.iteahome.nhs.adminui.model.form;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
-public class Institution {
+public class InstitutionUpdateForm {
 
 // FIELDS: -------------------------------------------------------------------------------------------------------------
 
-    @NotNull(message = "ID CANNOT BE EMPTY")
     private int id;
 
-    @NotNull(message = "TYPE CANNOT BE EMPTY")
+    @NotEmpty(message = "TYPE CANNOT BE EMPTY")
     private String type;
 
-    @NotNull(message = "CUI CANNOT BE EMPTY")
+    @NotEmpty(message = "CUI CANNOT BE EMPTY")
     private String cui;
 
-    @NotNull(message = "NAME CANNOT BE EMPTY")
+    @NotEmpty(message = "NAME CANNOT BE EMPTY")
     private String name;
 
-    @NotNull(message = "ADDRESS CANNOT BE EMPTY")
+    @NotEmpty(message = "ADDRESS CANNOT BE EMPTY")
     private String address;
 
-    @NotNull(message = "PHONE NUMBER NAME CANNOT BE EMPTY")
     @Pattern(regexp = "^0040\\d{9}$", message = "INVALID PHONE NUMBER")
     private String phoneNoRo;
 
-    @NotNull(message = "EMAIL CANNOT BE EMPTY")
     @Email(regexp = ".+@.+\\.\\w+", message = "INVALID EMAIL ADDRESS")
     private String email;
 
@@ -35,7 +32,7 @@ public class Institution {
 
 // METHODS: ------------------------------------------------------------------------------------------------------------
 
-    public Institution() {
+    public InstitutionUpdateForm() {
     }
 
     public int getId() {

@@ -6,8 +6,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class ServiceUtil {
 
+// DEPENDENCIES: -------------------------------------------------------------------------------------------------------
+
     @Autowired
     Logger logger;
+
+// METHODS: ------------------------------------------------------------------------------------------------------------
 
     boolean causedByInvalid(Exception ex) {
         return ex.getMessage().contains("VALIDATION ERROR IN FIELD");
@@ -20,6 +24,14 @@ public class ServiceUtil {
     String parseInvalid(Exception ex) {
         if (causedByInvalid(ex)) {
             return getInvalidMessages(ex.getMessage());
+        } else {
+            return null;
+        }
+    }
+
+    String parseDuplicate(Exception ex) {
+        if (causedByDuplicate(ex)) {
+            return getDuplicateMessage(ex.getMessage());
         } else {
             return null;
         }
