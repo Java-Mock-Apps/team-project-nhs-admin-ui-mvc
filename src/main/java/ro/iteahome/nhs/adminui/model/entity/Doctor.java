@@ -119,11 +119,11 @@ public class Doctor {
         return institutions;
     }
 
-    public void setInstitutionsCUIs(String institutionCUIs) {
+    public void setInstitutionCUIs(String institutionCUIs) {
         this.institutionCUIs = institutionCUIs;
     }
 
-    public String getInstitutionsCUIs() {
+    public String getInstitutionCUIs() {
         return institutionCUIs;
     }
 

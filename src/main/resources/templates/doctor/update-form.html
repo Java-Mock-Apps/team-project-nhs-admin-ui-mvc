@@ -56,9 +56,11 @@
     </div>
 
     <div class="form-label-group institutions">
-        <select id="institutions" name="institutions" th:field="*{institutionsCUIs}" class="form-control selectpicker" multiple
+        <select id="institutions" name="institutions" th:field="*{institutionCUIs}" class="form-control selectpicker"
+                multiple
                 data-live-search="true">
-            <option th:each="institution : ${institutions}" th:value="${institution.cui}" th:text="${institution.name}"></option>
+            <option th:each="institution : ${institutions}" th:value="${institution.cui}"
+                    th:text="${institution.name}"></option>
         </select>
         <span th:errors="*{institutions}" th:if="${#fields.hasErrors('institutions')}"></span>
     </div>
@@ -105,34 +107,22 @@
     $('select').selectpicker();
     let titleDiv = $('.title .filter-option-inner-inner');
     let specialtiesDiv = $('.specialties .filter-option-inner-inner');
-    let institutionsDiv = $('.institutions .filter-option-inner-inner');
-
-
     let titleArr = [[${doctor.title}]].split(',')
-        .map(title => { return title });
+        .map(title => {
+            return title
+        });
     let specialtiesArr = [[${doctor.specialties}]].split(',')
-        .map(specialty => { return specialty });
-
-    // let institutionsArr = [[${doctor.institution}]].split(',')
-    //     .map(specialty => { return specialty });
-
-    if (specialtiesArr[0] != ""){
+        .map(specialty => {
+            return specialty
+        });
+    if (specialtiesArr[0] != "") {
         $('.specialties .selectpicker').selectpicker('val', specialtiesArr);
-    }
-    else
+    } else
         specialtiesDiv.html("Please select a specialty");
-    if (titleArr[0] != ""){
+    if (titleArr[0] != "") {
         $('.title .selectpicker').selectpicker('val', titleArr);
-    }
-    else
+    } else
         titleDiv.html("Please select a title");
-
-    // if (institutionsArr[0] != ""){
-    //     $('.institutions .selectpicker').selectpicker('val', institutionsArr);
-    // }
-    // else
-    //     titleDiv.html("Please select a title");
-
 </script>
 
 </body>

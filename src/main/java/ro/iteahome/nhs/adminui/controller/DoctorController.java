@@ -87,8 +87,10 @@ public class DoctorController {
 
     @PostMapping("/updated-doctor")
     public ModelAndView update(@Valid Doctor doctor) {
+        System.out.println(doctor.getInstitutionCUIs());
         Doctor databaseDoctor = doctorService.update(doctor);
-        databaseDoctor.setInstitutionsCUIs(databaseDoctor.getInstitutions().stream()
+        System.out.println(databaseDoctor.getInstitutionCUIs());
+        databaseDoctor.setInstitutionCUIs(databaseDoctor.getInstitutions().stream()
                 .map(Institution::getName).collect(Collectors.joining(",")));
         return new ModelAndView("doctor/home-doctor").addObject(databaseDoctor);
     }
