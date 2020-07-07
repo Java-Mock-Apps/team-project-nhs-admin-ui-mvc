@@ -1,44 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>NHS Delete Doctor</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>NHS Delete Doctor</title>
+        <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
 
 
-    <!-- Bootstrap core CSS -->
-    <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
+        <!-- Bootstrap core CSS -->
+        <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
 
-</head>
+    </head>
 
-<body class="text-center">
+    <body class="text-center">
 
-<div class="form-nhs">
+        <div class="form-nhs">
 
-    <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
-    <h1 class="h3 mb-3 font-weight-normal">Delete Doctor form</h1>
+            <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
+            <h1 class="h3 mb-3 font-weight-normal">Delete Doctor form</h1>
 
-    <form class="form-nhs" method="POST" th:action="@{/doctors/delete-by-cnp}" th:object="${doctor}">
+            <form class="form-nhs" method="POST" th:action="@{/doctors/delete-by-cnp}" th:object="${doctor}">
 
 
-        <div class="form-label-group">
-            <input id="cnp" name="cnp" th:field="*{cnp}" type="text" class="form-control"
-                   placeholder="CNP" autofocus>
-            <span th:errors="*{cnp}" th:if="${#fields.hasErrors('cnp')}"></span>
-            <label for="cnp">CNP</label>
-        </div>
+                <div class="form-label-group">
+                    <input id="cnp" name="cnp" th:field="*{cnp}" type="text" class="form-control"
+                           placeholder="CNP" autofocus>
+                    <span th:errors="*{cnp}" th:if="${#fields.hasErrors('cnp')}"></span>
+                    <label for="cnp">CNP</label>
+                </div>
 
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Delete Doctor</button>
-    </form>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Delete Doctor</button>
+            </form>
 
-    <br><br>
-    <a href="/home-initial" class="btn btn-lg btn-secondary btn-block">Go back</a>
-    <br><br>
+            <br><br>
+            <a href="/home-initial" class="btn btn-lg btn-secondary btn-block">Go back</a>
+            <br><br>
 
-    <p class="mt-5 mb-3 text-muted">&copy; 2020</p></div>
-</body>
+            <p class="mt-5 mb-3 text-muted">&copy; 2020</p></div>
+    </body>
 </html>
 

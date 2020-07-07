@@ -4,37 +4,36 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-
 public class Institution {
 
-    // FIELDS: -------------------------------------------------------------------------------------------------------------
-    @NotNull (message = "ID CANNOT BE EMPTY.")
+// FIELDS: -------------------------------------------------------------------------------------------------------------
+
+    @NotNull(message = "ID CANNOT BE EMPTY")
     private int id;
 
-    @NotNull (message = "TYPE CANNOT BE EMPTY.")
+    @NotNull(message = "TYPE CANNOT BE EMPTY")
     private String type;
 
-    @NotNull (message = "CUI CANNOT BE EMPTY.")
+    @NotNull(message = "CUI CANNOT BE EMPTY")
     private String cui;
 
-    @NotNull (message = "NAME CANNOT BE EMPTY.")
+    @NotNull(message = "NAME CANNOT BE EMPTY")
     private String name;
 
-    @NotNull (message = "ADDRESS CANNOT BE EMPTY.")
+    @NotNull(message = "ADDRESS CANNOT BE EMPTY")
     private String address;
 
-    @NotNull (message = "PHONE NUMBER NAME CANNOT BE EMPTY.")
+    @NotNull(message = "PHONE NUMBER NAME CANNOT BE EMPTY")
     @Pattern(regexp = "^0040\\d{9}$", message = "INVALID PHONE NUMBER")
     private String phoneNoRo;
 
-    @NotNull(message = "EMAIL CANNOT BE EMPTY.")
+    @NotNull(message = "EMAIL CANNOT BE EMPTY")
     @Email(regexp = ".+@.+\\.\\w+", message = "INVALID EMAIL ADDRESS")
     private String email;
 
-    @NotNull(message = "WEBSITE CANNOT BE EMPTY.")
     private String website;
 
-    // METHODS: ------------------------------------------------------------------------------------------------------------
+// METHODS: ------------------------------------------------------------------------------------------------------------
 
     public Institution() {
     }
@@ -47,7 +46,6 @@ public class Institution {
         this.id = id;
     }
 
-    //TODO TYPES
     public String getType() {
         return type;
     }
@@ -103,6 +101,4 @@ public class Institution {
     public void setWebsite(String website) {
         this.website = website;
     }
-
-
 }

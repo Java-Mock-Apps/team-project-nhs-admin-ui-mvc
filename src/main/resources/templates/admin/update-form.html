@@ -1,71 +1,73 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>NHS Update Admin</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>NHS Update Admin</title>
+        <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
+
+        <!-- Bootstrap core CSS -->
+        <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
+    </head>
+
+    <body class="text-center">
+        <span th:if="${errorMessage != null}" th:text="*{errorMessage}"></span>
+        <!-- TODO: Incorporate this error message graphically, somewhere. -->
+
+        <form class="form-nhs" method="POST" th:action="@{/admins/updated-admin}" th:object="${adminUpdateForm}">
+
+            <input id="id" name="id" th:field="*{id}" type="hidden">
+
+            <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
+            <h1 class="h3 mb-3 font-weight-normal">Update Admin form</h1>
+
+            <div class="form-label-group">
+                <input id="email" name="email" th:field="*{email}" type="text" class="form-control"
+                       placeholder="Email address" autofocus>
+                <label for="email">Email address</label>
+                <span th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></span>
+            </div>
+
+            <div class="form-label-group">
+                <input type="password" id="password" class="form-control" placeholder="Password" th:field="*{password}">
+                <label for="password">Password</label>
+                <span th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></span>
+            </div>
+
+            <div class="form-label-group">
+                <input id="firstName" name="firstName" th:field="*{firstName}" type="text" class="form-control"
+                       placeholder="First Name">
+                <label for="firstName">First Name</label>
+                <span th:errors="*{firstName}" th:if="${#fields.hasErrors('firstName')}"></span>
+            </div>
+
+            <div class="form-label-group">
+                <input id="lastName" name="lastName" th:field="*{lastName}" type="text" class="form-control"
+                       placeholder="Last Name">
+                <label for="lastName">Last Name</label>
+                <span th:errors="*{lastName}" th:if="${#fields.hasErrors('lastName')}"></span>
+            </div>
 
 
-    <!-- Bootstrap core CSS -->
-    <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
+            <div class="form-label-group">
+                <input id="phoneNoRo" name="phoneNoRo" th:field="*{phoneNoRo}" type="text" class="form-control"
+                       placeholder="Romanian Phone Number">
+                <label for="phoneNoRo">Romanian Phone Number</label>
+                <span th:errors="*{phoneNoRo}" th:if="${#fields.hasErrors('phoneNoRo')}"></span>
+            </div>
 
-</head>
+            <input id="status" name="status" th:field="*{status}" type="hidden">
 
-<body class="text-center">
+            <input id="role" name="role" th:field="*{role}" type="hidden">
 
-<form class="form-nhs" method="POST" th:action="@{/admins/updated-admin}" th:object="${admin}">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Update Admin</button>
+            <br><br>
+            <a href="/home-initial" class="btn btn-lg btn-secondary btn-block">Go back</a>
+            <br><br>
 
-    <input id="id" name="id" th:field="*{id}" type="hidden">
-
-
-    <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
-    <h1 class="h3 mb-3 font-weight-normal">Update Admin form</h1>
-
-    <div class="form-label-group">
-        <input id="email" name="email" th:field="*{email}" type="email" class="form-control"
-               placeholder="Email address" autofocus>
-        <span th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></span>
-        <label for="email">Email address</label>
-    </div>
-    <div class="form-label-group">
-        <input type="password" id="password" class="form-control" placeholder="Password" th:field="*{password}">
-        <span th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></span>
-        <label for="password">Password</label>
-    </div>
-
-    <div class="form-label-group">
-        <input id="firstName" name="firstName" th:field="*{firstName}" type="text" class="form-control"
-               placeholder="First Name">
-        <span th:errors="*{firstName}" th:if="${#fields.hasErrors('firstName')}"></span>
-        <label for="firstName">First Name</label>
-    </div>
-
-    <div class="form-label-group">
-        <input id="lastName" name="lastName" th:field="*{lastName}" type="text" class="form-control"
-               placeholder="Last Name">
-        <span th:errors="*{lastName}" th:if="${#fields.hasErrors('lastName')}"></span>
-        <label for="lastName">Last Name</label>
-    </div>
-
-
-    <div class="form-label-group">
-        <input id="phoneNoRo" name="phoneNoRo" th:field="*{phoneNoRo}" type="text" class="form-control"
-               placeholder="Romanian Phone Number">
-        <span th:errors="*{phoneNoRo}" th:if="${#fields.hasErrors('phoneNoRo')}"></span>
-        <label for="phoneNoRo">Romanian Phone Number</label>
-    </div>
-    <input id="status" name="status" th:field="*{status}" type="hidden">
-
-    <input id="role" name="role" th:field="*{role}" type="hidden">
-
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Update Admin</button>
-    <br><br>
-    <a href="/home-initial" class="btn btn-lg btn-secondary btn-block">Go back</a>
-    <br><br>
-
-    <p class="mt-5 mb-3 text-muted">&copy; 2020</p></form>
-</body>
+            <p class="mt-5 mb-3 text-muted">&copy; 2020</p></form>
+    </body>
 </html>

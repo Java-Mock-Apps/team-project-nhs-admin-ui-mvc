@@ -1,57 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>NHS Sign In</title>
-    <link rel="shortcut icon" type="image/png" href="../../assets/brand/n.png">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>NHS Sign In</title>
+        <link rel="shortcut icon" type="image/png" href="../../assets/brand/n.png">
 
+        <!-- Bootstrap core CSS -->
+        <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
 
-    <!-- Bootstrap core CSS -->
-    <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
+    </head>
 
+    <body class="text-center">
+        <br>
+        <form class="form-nhs" method="POST" th:action="@{/login}">
 
-</head>
+            <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
+            <h1 class="h3 mb-3 font-weight-normal">Welcome to the NHS Admin UI</h1>
+            <br>
 
-<body class="text-center">
-<br>
+            <div th:if="${param.error}">Wrong credentials</div>
+            <br>
 
+            <div class="form-label-group">
+                <input id="username" name="username" type="text" class="form-control"
+                       placeholder="Email address" autofocus>
+                <label for="username">Email address</label>
+            </div>
 
-<form class="form-nhs" method="POST" th:action="@{/login}">
+            <div class="form-label-group">
+                <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+                <label for="password">Password</label>
+            </div>
 
-    <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
-    <h1 class="h3 mb-3 font-weight-normal">NHS Sign in form</h1>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 
-    <br>
+            <br><br>
+            <a href="/" class="btn btn-lg btn-secondary btn-block">Go back</a>
+            <br><br>
 
-    <div th:if="${param.error}">Wrong credentials</div>
-
-    <br>
-
-    <div class="form-label-group">
-        <input id="username" name="username" type="email" class="form-control"
-               placeholder="Email address" autofocus>
-        <label for="username">Email address</label>
-    </div>
-
-    <div class="form-label-group">
-        <input type="password" name="password" id="password" class="form-control" placeholder="Password">
-        <label for="password">Password</label>
-    </div>
-
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-
-
-    <br><br>
-    <a href="/" class="btn btn-lg btn-secondary btn-block">Go back</a>
-    <br><br>
-
-    <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
-
-</form>
-
-
-</body>
+            <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+        </form>
+    </body>
 </html>

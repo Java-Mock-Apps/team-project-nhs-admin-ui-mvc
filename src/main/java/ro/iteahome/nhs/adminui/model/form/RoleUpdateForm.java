@@ -1,19 +1,27 @@
-package ro.iteahome.nhs.adminui.model.dto;
+package ro.iteahome.nhs.adminui.model.form;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
-public class RoleCreationDTO {
+public class RoleUpdateForm {
 
 // FIELDS: -------------------------------------------------------------------------------------------------------------
 
-    // NO ID.
+    private int id;
 
-    @NotNull
+    @NotEmpty(message = "ROLE NAME CANNOT BE EMPTY")
     private String name;
 
 // METHODS: ------------------------------------------------------------------------------------------------------------
 
-    public RoleCreationDTO() {
+    public RoleUpdateForm() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -22,10 +30,5 @@ public class RoleCreationDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return name;
     }
 }

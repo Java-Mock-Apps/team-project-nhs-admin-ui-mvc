@@ -1,17 +1,16 @@
 package ro.iteahome.nhs.adminui.controller;
 
-import jdk.swing.interop.SwingInterOpUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import ro.iteahome.nhs.adminui.model.entity.Nurse;
 import ro.iteahome.nhs.adminui.model.entity.Patient;
 import ro.iteahome.nhs.adminui.service.PatientService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/patients")
@@ -27,15 +26,15 @@ public class PatientController {
 
 // LINK "GET" REQUESTS: ------------------------------------------------------------------------------------------------
 
-
-
     @GetMapping("/add-form")
     public ModelAndView showAddForm(Patient patient) {
         return new ModelAndView("patient/add-form");
     }
 
     @GetMapping("/get-form")
-    public String showGetForm(Patient patient) { return "patient/get-form"; }
+    public String showGetForm(Patient patient) {
+        return "patient/get-form";
+    }
 
     @GetMapping("/update-search-form")
     public String showUpdateSearchForm(Patient patient) {
@@ -57,13 +56,11 @@ public class PatientController {
         return new ModelAndView("patient/home-patient").addObject(databasePatient);
     }
 
-
     @GetMapping("/by-cnp")
-    public ModelAndView getByCnp( Patient patient) {
+    public ModelAndView getByCnp(Patient patient) {
         Patient databasePatient = patientService.findByCnp(patient.getCnp());
         return new ModelAndView("patient/home-patient").addObject(databasePatient);
     }
-
 
     @GetMapping("/update-form-by-cnp")
     public ModelAndView showUpdateFormByCnp(Patient patient) {
@@ -77,12 +74,10 @@ public class PatientController {
         return new ModelAndView("patient/home-patient").addObject(databasePatient);
     }
 
-
     @PostMapping("/delete-by-cnp")
     public ModelAndView deleteByCnp(Patient patient) {
         Patient databasePatient = patientService.findByCnp(patient.getCnp());
         patientService.deleteByCnp(databasePatient.getCnp());
         return new ModelAndView("patient/home-patient").addObject(databasePatient);
     }
-
 }

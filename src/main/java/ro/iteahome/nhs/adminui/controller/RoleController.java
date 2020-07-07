@@ -2,22 +2,18 @@ package ro.iteahome.nhs.adminui.controller;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import ro.iteahome.nhs.adminui.model.dto.RoleCreationDTO;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ro.iteahome.nhs.adminui.model.dto.RoleDTO;
-import ro.iteahome.nhs.adminui.model.entity.Role;
+import ro.iteahome.nhs.adminui.model.form.RoleNameForm;
+import ro.iteahome.nhs.adminui.model.form.RoleUpdateForm;
 import ro.iteahome.nhs.adminui.service.RoleService;
 
 import javax.validation.Valid;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/roles")
@@ -34,91 +30,102 @@ public class RoleController {
 // LINK "GET" REQUESTS: ------------------------------------------------------------------------------------------------
 
     @GetMapping("/add-form")
-    public String showAddForm(RoleCreationDTO roleCreationDTO) {
+    public String showAddForm(RoleNameForm roleNameForm) {
         return "role/add-form";
     }
 
     @GetMapping("/get-form")
-    public String showGetForm(RoleDTO roleDTO) { return "role/get-form"; }
+    public String showGetForm(RoleNameForm roleNameForm) {
+        return "role/get-form";
+    }
 
     @GetMapping("/update-search-form")
-    public String showUpdateSearchForm(RoleDTO roleDTO) {
+    public String showUpdateSearchForm(RoleUpdateForm roleUpdateForm) {
         return "role/update-search-form";
     }
 
+    @GetMapping("/update-form")
+    public String showUpdateForm(@Valid RoleUpdateForm roleUpdateForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "role/update-search-form";
+        } else {
+            try {
+                RoleDTO targetRoleDTO = roleService.findByName(roleUpdateForm.getName());
+                roleUpdateForm.setId(targetRoleDTO.getId());
+                model.addAttribute("roleUpdateForm", roleUpdateForm);
+                return "role/update-form";
+            } catch (Exception ex) {
+                model.addAttribute("errorMessage", ex.getMessage());
+                return "role/update-search-form";
+            }
+        }
+    }
+
     @GetMapping("/delete-form")
-    public String showDeleteForm(RoleDTO roleDTO) {
+    public String showDeleteForm(RoleNameForm roleNameForm) {
         return "role/delete-form";
     }
 
 // METHODS: ------------------------------------------------------------------------------------------------------------
 
-    // TODO: Incorporate exception handling. Leaving form fields empty is an issue.
-
     @PostMapping
-    public ModelAndView add(@Valid RoleCreationDTO roleCreationDTO) {
-        RoleDTO roleDTO = roleService.add(roleCreationDTO);
-        return new ModelAndView("role/home-role").addObject(roleDTO);
-    }
-
-    @GetMapping("/by-id")
-    public ModelAndView getById(RoleDTO roleDTO) {
-        RoleDTO databaseRoleDTO = roleService.findById(roleDTO.getId());
-        return new ModelAndView("role/home-role").addObject(databaseRoleDTO);
+    public String add(@Valid RoleNameForm roleNameForm, BindingResult bindingResult, Model model) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return "role/add-form";
+        } else {
+            try {
+                RoleDTO roleDTO = roleService.add(roleNameForm);
+                model.addAttribute("roleDTO", roleDTO);
+                return "role/home-role";
+            } catch (Exception ex) {
+                model.addAttribute("errorMessage", ex.getMessage());
+                return "role/add-form";
+            }
+        }
     }
 
     @GetMapping("/by-name")
-    public ModelAndView getByName(RoleDTO roleDTO) {
-        RoleDTO databaseRoleDTO = roleService.findByName(roleDTO.getName());
-        return new ModelAndView("role/home-role").addObject(databaseRoleDTO);
-    }
-
-    @GetMapping("/update-form-by-id")
-    public ModelAndView showUpdateFormById(RoleDTO roleDTO) {
-        RoleDTO foundRoleDTO = roleService.findById(roleDTO.getId());
-        return new ModelAndView("role/update-form").addObject(foundRoleDTO);
-    }
-
-    @GetMapping("/update-form-by-name")
-    public ModelAndView showUpdateFormByName(RoleDTO roleDTO) {
-        RoleDTO foundRoleDTO = roleService.findByName(roleDTO.getName());
-        return new ModelAndView("role/update-form").addObject(foundRoleDTO);
+    public String getByName(@Valid RoleNameForm roleNameForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "role/get-form";
+        } else {
+            try {
+                model.addAttribute("roleDTO", roleService.findByName(roleNameForm.getName()));
+                return "role/home-role";
+            } catch (Exception ex) {
+                model.addAttribute("errorMessage", ex.getMessage());
+                return "role/get-form";
+            }
+        }
     }
 
     @PostMapping("/updated-role")
-    public ModelAndView update(RoleDTO foundRoleDTO) {
-        Role role = modelMapper.map(foundRoleDTO, Role.class);
-        RoleDTO roleDTO = roleService.update(role);
-        return new ModelAndView("role/home-role").addObject(roleDTO);
+    public String update(@Valid RoleUpdateForm roleUpdateForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "role/update-form";
+        } else {
+            try {
+                model.addAttribute("roleDTO", roleService.update(roleUpdateForm));
+                return "role/home-role";
+            } catch (Exception ex) {
+                model.addAttribute("errorMessage", ex.getMessage());
+                return "role/update-form";
+            }
+        }
     }
 
-    @PostMapping("/deleted-role-id")
-    public ModelAndView deleteById(RoleDTO roleDTO) {
-        RoleDTO targetRoleDTO = roleService.deleteById(roleDTO.getId());
-        return new ModelAndView("role/home-role").addObject(targetRoleDTO);
-    }
-
-    @PostMapping("/deleted-role-name")
-    public ModelAndView deleteByName(RoleDTO roleDTO) {
-        RoleDTO targetRoleDTO = roleService.deleteByName(roleDTO.getName());
-        return new ModelAndView("role/home-role").addObject(targetRoleDTO);
-    }
-
-// OTHER METHODS: ------------------------------------------------------------------------------------------------------
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new LinkedHashMap<>();
-        errors.put("errorCode", "ROL-00");
-        errors.put("errorMessage", "ROLE FIELDS HAVE VALIDATION ERRORS.");
-        errors.putAll(ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .collect(Collectors.toMap(
-                        FieldError::getField,
-                        FieldError::getDefaultMessage)));
-        return new ResponseEntity<>(
-                errors,
-                HttpStatus.BAD_REQUEST);
+    @PostMapping("/deleted-role")
+    public String deleteByName(@Valid RoleNameForm roleNameForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "role/delete-form";
+        } else {
+            try {
+                model.addAttribute("roleDTO", roleService.deleteByName(roleNameForm.getName()));
+                return "role/home-role";
+            } catch (Exception ex) {
+                model.addAttribute("errorMessage", ex.getMessage());
+                return "role/delete-form";
+            }
+        }
     }
 }

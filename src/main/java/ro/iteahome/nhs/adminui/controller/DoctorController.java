@@ -3,7 +3,9 @@ package ro.iteahome.nhs.adminui.controller;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import ro.iteahome.nhs.adminui.model.entity.Doctor;
 import ro.iteahome.nhs.adminui.model.entity.Institution;
@@ -12,7 +14,6 @@ import ro.iteahome.nhs.adminui.service.InstitutionService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @Controller
@@ -31,7 +32,6 @@ public class DoctorController {
     private ModelMapper modelMapper;
 
 // LINK "GET" REQUESTS: ------------------------------------------------------------------------------------------------
-
 
     @GetMapping("/add-form")
     public ModelAndView showAddForm(Doctor doctor) {
@@ -83,6 +83,7 @@ public class DoctorController {
                 .addObject("doctorSpecialties", doctorSpecialties)
                 .addObject("doctorTitles", doctorTitles)
                 .addObject("institutions", institutionArrayList);
+
     }
 
     @PostMapping("/updated-doctor")
@@ -100,5 +101,4 @@ public class DoctorController {
 
         return new ModelAndView("doctor/home-doctor").addObject(databaseDoctor);
     }
-
 }
