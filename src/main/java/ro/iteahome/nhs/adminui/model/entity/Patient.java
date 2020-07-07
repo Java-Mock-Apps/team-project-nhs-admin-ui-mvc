@@ -1,34 +1,34 @@
 package ro.iteahome.nhs.adminui.model.entity;
 
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-
 public class Patient {
 
-    // FIELDS: -------------------------------------------------------------------------------------------------------------
-    @NotNull (message = "ID CANNOT BE EMPTY.")
+// FIELDS: -------------------------------------------------------------------------------------------------------------
+
+    @NotNull(message = "ID CANNOT BE EMPTY")
     private int id;
 
-    @NotNull (message = "CNP CANNOT BE EMPTY.")
+    @NotNull(message = "CNP CANNOT BE EMPTY")
     private String cnp;
 
-    @NotNull(message = "EMAIL CANNOT BE EMPTY.")
+    @NotNull(message = "EMAIL CANNOT BE EMPTY")
     @Email(regexp = ".+@.+\\.\\w+", message = "INVALID EMAIL ADDRESS")
     private String email;
 
-    @NotNull (message = "FIRST NAME CANNOT BE EMPTY.")
+    @NotNull(message = "FIRST NAME CANNOT BE EMPTY")
     private String firstName;
 
-    @NotNull (message = "LAST NAME CANNOT BE EMPTY.")
+    @NotNull(message = "LAST NAME CANNOT BE EMPTY")
     private String lastName;
 
-    @NotNull (message = "PHONE NUMBER NAME CANNOT BE EMPTY.")
+    @NotNull(message = "PHONE NUMBER NAME CANNOT BE EMPTY")
     @Pattern(regexp = "^0040\\d{9}$", message = "INVALID PHONE NUMBER")
     private String phoneNoRo;
-    // METHODS: ------------------------------------------------------------------------------------------------------------
+
+// METHODS: ------------------------------------------------------------------------------------------------------------
 
     public Patient() {
     }

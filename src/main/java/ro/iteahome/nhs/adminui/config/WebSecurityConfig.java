@@ -64,6 +64,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web
                 .ignoring()
-                .antMatchers("/assets/**"); // EVERYTHING IN "STATIC" IS SKIPPED.
+                .antMatchers("/assets/**"); // EVERYTHING IN "STATIC/ASSETS" IS SKIPPED.
     }
 }

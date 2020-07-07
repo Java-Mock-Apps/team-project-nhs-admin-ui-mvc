@@ -1,16 +1,16 @@
 package ro.iteahome.nhs.adminui.controller;
 
-import jdk.swing.interop.SwingInterOpUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import ro.iteahome.nhs.adminui.model.entity.Nurse;
 import ro.iteahome.nhs.adminui.service.NurseService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/nurses")
@@ -31,12 +31,14 @@ public class NurseController {
         String[] nurseSpecialties = nurseService.getSpecialties();
         String[] nurseTitles = nurseService.getTitles();
         return new ModelAndView("nurse/add-form")
-            .addObject("nurseSpecialties",nurseSpecialties)
-                .addObject("nurseTitles",nurseTitles);
+                .addObject("nurseSpecialties", nurseSpecialties)
+                .addObject("nurseTitles", nurseTitles);
     }
 
     @GetMapping("/get-form")
-    public String showGetForm(Nurse nurse) { return "nurse/get-form"; }
+    public String showGetForm(Nurse nurse) {
+        return "nurse/get-form";
+    }
 
     @GetMapping("/update-search-form")
     public String showUpdateSearchForm(Nurse nurse) {
@@ -59,20 +61,19 @@ public class NurseController {
     }
 
     @GetMapping("/by-cnp")
-    public ModelAndView getByCnp( Nurse nurse) {
+    public ModelAndView getByCnp(Nurse nurse) {
         Nurse databaseNurse = nurseService.findByCnp(nurse.getCnp());
         return new ModelAndView("nurse/home-nurse").addObject(databaseNurse);
     }
 
-
     @GetMapping("/update-form-by-cnp")
     public ModelAndView showUpdateFormByCnp(Nurse nurse) {
-        String[] nurseSpecialties =  nurseService.getSpecialties();
+        String[] nurseSpecialties = nurseService.getSpecialties();
         String[] nurseTitles = nurseService.getTitles();
         Nurse databaseNurse = nurseService.findByCnp(nurse.getCnp());
         return new ModelAndView("nurse/update-form").addObject(databaseNurse)
-            .addObject("nurseSpecialties",nurseSpecialties)
-                .addObject("nurseTitles",nurseTitles);
+                .addObject("nurseSpecialties", nurseSpecialties)
+                .addObject("nurseTitles", nurseTitles);
     }
 
     @PostMapping("/updated-nurse")
@@ -87,5 +88,4 @@ public class NurseController {
         nurseService.deleteByCnp(databaseNurse.getCnp());
         return new ModelAndView("nurse/home-nurse").addObject(databaseNurse);
     }
-
 }

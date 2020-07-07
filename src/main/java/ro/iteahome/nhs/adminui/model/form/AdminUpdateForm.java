@@ -1,40 +1,45 @@
-package ro.iteahome.nhs.adminui.model.dto;
+package ro.iteahome.nhs.adminui.model.form;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-public class AdminCreationDTO {
+public class AdminUpdateForm {
 
 // FIELDS: -------------------------------------------------------------------------------------------------------------
 
-    // NO ID. (REST-GENERATED)
+    private int id;
 
-    @NotNull(message = "EMAIL CANNOT BE EMPTY.")
     @Email(regexp = ".+@.+\\.\\w+", message = "INVALID EMAIL ADDRESS")
     private String email;
 
-    @NotNull(message = "PASSWORD CANNOT BE EMPTY.")
     @Pattern(regexp = "((?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,32})", message = "INVALID PASSWORD")
     private String password;
 
-    @NotNull(message = "FIRST NAME CANNOT BE EMPTY.")
+    @NotBlank(message = "FIRST NAME CANNOT BE EMPTY")
     private String firstName;
 
-    @NotNull(message = "LAST NAME CANNOT BE EMPTY.")
+    @NotBlank(message = "LAST NAME CANNOT BE EMPTY")
     private String lastName;
 
-    @NotNull(message = "PHONE NUMBER NAME CANNOT BE EMPTY.")
     @Pattern(regexp = "^0040\\d{9}$", message = "INVALID PHONE NUMBER")
     private String phoneNoRo;
 
-    // NO STATUS. (REST-GENERATED)
+    private int status;
 
-    // NO ROLE. (REST-GENERATED)
+    private String role;
 
 // METHODS: ------------------------------------------------------------------------------------------------------------
 
-    public AdminCreationDTO() {
+    public AdminUpdateForm() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -75,5 +80,21 @@ public class AdminCreationDTO {
 
     public void setPhoneNoRo(String phoneNoRo) {
         this.phoneNoRo = phoneNoRo;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

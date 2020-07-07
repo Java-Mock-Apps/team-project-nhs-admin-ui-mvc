@@ -5,37 +5,39 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Set;
 
-
 public class Doctor {
 
-    // FIELDS: -------------------------------------------------------------------------------------------------------------
-    @NotNull(message = "ID CANNOT BE EMPTY.")
+// FIELDS: -------------------------------------------------------------------------------------------------------------
+
+    @NotNull(message = "ID CANNOT BE EMPTY")
     private int id;
 
-    @NotNull(message = "CNP CANNOT BE EMPTY.")
+    @NotNull(message = "CNP CANNOT BE EMPTY")
+
     private String cnp;
 
-    @NotNull(message = "EMAIL CANNOT BE EMPTY.")
+    @NotNull(message = "EMAIL CANNOT BE EMPTY")
     @Email(regexp = ".+@.+\\.\\w+", message = "INVALID EMAIL ADDRESS")
     private String email;
 
-    @NotNull(message = "FIRST NAME CANNOT BE EMPTY.")
+    @NotNull(message = "FIRST NAME CANNOT BE EMPTY")
     private String firstName;
 
-    @NotNull(message = "LAST NAME CANNOT BE EMPTY.")
+    @NotNull(message = "LAST NAME CANNOT BE EMPTY")
     private String lastName;
 
-    @NotNull(message = "MEDICAL LICENSE CANNOT BE EMPTY.")
+    @NotNull(message = "MEDICAL LICENSE CANNOT BE EMPTY")
     private String licenseNo;
 
-    @NotNull(message = "PHONE NUMBER NAME CANNOT BE EMPTY.")
+    @NotNull(message = "PHONE NUMBER NAME CANNOT BE EMPTY")
+
     @Pattern(regexp = "^0040\\d{9}$", message = "INVALID PHONE NUMBER")
     private String phoneNoRo;
 
-    @NotNull(message = "SPECIALTIES CANNOT BE EMPTY.")
+    @NotNull(message = "SPECIALTIES CANNOT BE EMPTY")
     private String specialties;
 
-    @NotNull(message = "TITLE CANNOT BE EMPTY.")
+    @NotNull(message = "TITLE CANNOT BE EMPTY")
     private String title;
 
     private Set<Institution> institutions;
@@ -133,10 +135,5 @@ public class Doctor {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String toString() {
-        return "Doctor : {First name " + this.firstName + " Last name " + this.lastName + " Title:" + this.getTitle() + " Specialty: " + this.getSpecialties()
-                + " Phone number " + this.getPhoneNoRo() + " CNP: " + this.getCnp() + " License: " + this.getLicenseNo() + " Email: " + this.getEmail() + "}";
     }
 }

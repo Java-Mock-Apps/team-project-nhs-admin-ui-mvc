@@ -5,7 +5,7 @@ public class GlobalAlreadyExistsException extends RuntimeException {
     private final String entityName;
 
     public GlobalAlreadyExistsException(String entityName) {
-        super(entityName + " ALREADY EXISTS.");
+        super(entityName + " ALREADY EXISTS");
         this.entityName = entityName;
     }
 

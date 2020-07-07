@@ -1,4 +1,4 @@
-package ro.iteahome.nhs.adminui.config;
+package ro.iteahome.nhs.adminui.config.util;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

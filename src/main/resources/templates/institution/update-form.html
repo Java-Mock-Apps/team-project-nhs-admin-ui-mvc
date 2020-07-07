@@ -1,85 +1,80 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>NHS Update Institution</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>NHS Update Institution</title>
+        <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
 
+        <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
+        <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
 
-    <link href="../../assets/dist/css/bootstrap.css" rel="stylesheet">
-    <link href="../../assets/styles/nhsforms.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    </head>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <body class="text-center">
+        <span th:if="${errorMessage != null}" th:text="*{errorMessage}"></span>
+        <!-- TODO: Incorporate this error message graphically, somewhere. -->
 
-</head>
+        <form class="form-nhs" method="POST" th:action="@{/medical-institutions/updated-institution}"
+              th:object="${institutionUpdateForm}">
+            <input id="id" name="id" th:field="*{id}" type="hidden">
+            <input id="cui" name="cui" th:field="*{cui}" type="hidden">
 
-<body class="text-center">
+            <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
+            <h1 class="h3 mb-3 font-weight-normal">Update Institution form</h1>
 
+            <div class="form-label-group">
+                <input id="email" name="email" th:field="*{email}" type="text" class="form-control"
+                       placeholder="Email address" autofocus>
+                <span th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></span>
+                <label for="email">Email address</label>
+            </div>
 
-<form class="form-nhs" method="POST" th:action="@{/medical-institutions/updated-institution}"
-      th:object="${institution}">
-    <input id="id" name="id" th:field="*{id}" type="hidden">
-    <input id="cui" name="cui" th:field="*{cui}" type="hidden">
+            <div class="form-label-group">
+                <select id="type" name="type" th:field="*{type}" class="form-control">
+                    <option value="" selected disabled>Please select a type</option>
+                    <option th:each="institutionType : ${institutionTypes}" th:value="${institutionType}"
+                            th:text="${institutionType}"></option>
+                </select>
+                <span th:errors="*{type}" th:if="${#fields.hasErrors('type')}"></span>
+            </div>
 
-    <img class="mb-4" src="../../assets/brand/n.png" alt="" width="156" height="156">
-    <h1 class="h3 mb-3 font-weight-normal">Update Institution form</h1>
+            <div class="form-label-group">
+                <input id="name" name="name" th:field="*{name}" type="text" class="form-control"
+                       placeholder="Name">
+                <span th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></span>
+                <label for="name">Name</label>
+            </div>
 
-    <div class="form-label-group">
-        <input id="email" name="email" th:field="*{email}" type="email" class="form-control"
-               placeholder="Email address" autofocus>
-        <span th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></span>
-        <label for="email">Email address</label>
-    </div>
+            <div class="form-label-group">
+                <input id="website" name="website" th:field="*{website}" type="text" class="form-control"
+                       placeholder="Website">
+                <span th:errors="*{website}" th:if="${#fields.hasErrors('website')}"></span>
+                <label for="name">Website</label>
+            </div>
 
+            <div class="form-label-group">
+                <input id="address" name="address" th:field="*{address}" type="text" class="form-control"
+                       placeholder="Address">
+                <span th:errors="*{address}" th:if="${#fields.hasErrors('address')}"></span>
+                <label for="address">Address</label>
+            </div>
 
-    <div class="form-label-group">
-        <select id="type" name="type" th:field="*{type}" class="form-control">
-            <option value="" selected disabled>Please select a type</option>
-            <option th:each="institutionType : ${types}" th:value="${institutionType}"
-                    th:text="${institutionType}"></option>
-        </select>
-        <span th:errors="*{type}" th:if="${#fields.hasErrors('type')}"></span>
-    </div>
+            <div class="form-label-group">
+                <input id="phoneNoRo" name="phoneNoRo" th:field="*{phoneNoRo}" type="text" class="form-control"
+                       placeholder="Romanian Phone Number">
+                <span th:errors="*{phoneNoRo}" th:if="${#fields.hasErrors('phoneNoRo')}"></span>
+                <label for="phoneNoRo">Romanian Phone Number</label>
+            </div>
 
-    <div class="form-label-group">
-        <input id="name" name="name" th:field="*{name}" type="text" class="form-control"
-               placeholder="Name">
-        <span th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></span>
-        <label for="name">Name</label>
-    </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Update Institution</button>
 
-    <div class="form-label-group">
-        <input id="website" name="website" th:field="*{website}" type="text" class="form-control"
-               placeholder="Website">
-        <span th:errors="*{website}" th:if="${#fields.hasErrors('website')}"></span>
-        <label for="name">Website</label>
-    </div>
+            <br><br>
+            <a href="/home-initial" class="btn btn-lg btn-secondary btn-block">Go back</a>
+            <br><br>
 
-    <div class="form-label-group">
-        <input id="address" name="address" th:field="*{address}" type="text" class="form-control"
-               placeholder="Address">
-        <span th:errors="*{address}" th:if="${#fields.hasErrors('address')}"></span>
-        <label for="address">Address</label>
-    </div>
-
-    <div class="form-label-group">
-        <input id="phoneNoRo" name="phoneNoRo" th:field="*{phoneNoRo}" type="text" class="form-control"
-               placeholder="Romanian Phone Number">
-        <span th:errors="*{phoneNoRo}" th:if="${#fields.hasErrors('phoneNoRo')}"></span>
-        <label for="phoneNoRo">Romanian Phone Number</label>
-    </div>
-
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Update Institution</button>
-
-    <br><br>
-    <a href="/home-initial" class="btn btn-lg btn-secondary btn-block">Go back</a>
-    <br><br>
-
-    <p class="mt-5 mb-3 text-muted">&copy; 2020</p></form>
-
-
-</body>
+            <p class="mt-5 mb-3 text-muted">&copy; 2020</p></form>
+    </body>
 </html>
-
