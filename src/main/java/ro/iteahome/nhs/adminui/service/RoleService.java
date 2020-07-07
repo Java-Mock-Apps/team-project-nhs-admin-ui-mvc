@@ -2,6 +2,7 @@ package ro.iteahome.nhs.adminui.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,8 @@ import ro.iteahome.nhs.adminui.model.dto.RoleDTO;
 import ro.iteahome.nhs.adminui.model.entity.Role;
 import ro.iteahome.nhs.adminui.model.form.RoleNameForm;
 import ro.iteahome.nhs.adminui.model.form.RoleUpdateForm;
+
+import java.util.List;
 
 @Service
 public class RoleService {
@@ -115,5 +118,19 @@ public class RoleService {
                 throw new GlobalRequestFailedException("ROLE");
             }
         }
+    }
+
+// OTHER METHODS: ------------------------------------------------------------------------------------------------------
+
+    public List<Role> getRolesList() {
+        ParameterizedTypeReference<List<Role>> responseType = new ParameterizedTypeReference<>() {
+        };
+        ResponseEntity<List<Role>> roleResponse =
+                restTemplate.exchange(
+                        restConfig.getSERVER_URL() + restConfig.getROLES_URI() + "/all",
+                        HttpMethod.GET,
+                        new HttpEntity<>(restConfig.buildAuthHeaders(restConfig.getCREDENTIALS())),
+                        responseType);
+        return roleResponse.getBody();
     }
 }
