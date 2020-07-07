@@ -1,17 +1,14 @@
 package ro.iteahome.nhs.adminui.controller;
 
-import jdk.swing.interop.SwingInterOpUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import ro.iteahome.nhs.adminui.model.entity.Nurse;
 import ro.iteahome.nhs.adminui.model.entity.Patient;
 import ro.iteahome.nhs.adminui.service.PatientService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/patients")
