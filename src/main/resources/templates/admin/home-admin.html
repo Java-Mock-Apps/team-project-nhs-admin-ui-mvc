@@ -29,8 +29,6 @@
         <div class="form-nhs">
             <div th:include="home-initial :: categories"></div>
 
-            <<<<<<< HEAD
-
         </div>
         <br>
         <h1 class="h3 mb-3 font-weight-normal contents">Your last Admin request result:</h1>
@@ -67,45 +65,5 @@
 
         <br>
         <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
-
     </body>
-    =======
-    </div>
-    <br>
-    <h1 class="h3 mb-3 font-weight-normal contents">Your last Admin request result:</h1>
-    <br>
-    <table class="table contents">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>FIRST NAME</th>
-                <th>LAST NAME</th>
-                <th>EMAIL</th>
-                <th>PHONE NUMBER</th>
-                <th>STATUS</th>
-                <th>ROLES</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td th:text="${adminDTO.id}"></td>
-                <td th:text="${adminDTO.firstName}"></td>
-                <td th:text="${adminDTO.lastName}"></td>
-                <td th:text="${adminDTO.email}"></td>
-                <td th:text="${adminDTO.phoneNoRo}"></td>
-                <td th:text="${adminDTO.status}"></td>
-                <td th:text="${adminDTO.role}"></td>
-            </tr>
-        </tbody>
-    </table>
-    <br>
-    <a class="btn btn-lg btn-primary btn-block form-nhs " style="padding : 0.5rem 1rem" href="/home-initial">Clear
-        Result</a>
-    <br>
-    <a href="/logout" class="btn btn-md btn-danger btn-block"
-       style="width: 50%; margin-left:25%; margin-right: 25% ">Logout</a>
-    <br>
-    <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
-    </body>
-    >>>>>>> exception
 </html>

@@ -5,8 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>NHS Admin Home</title>
         <link rel="shortcut icon" type="image/png" href="../assets/brand/n.png">
+
         <!-- Bootstrap core CSS -->
         <link href="/assets/dist/css/bootstrap.css" rel="stylesheet">
+
         <!-- Custom styles for this template -->
         <link href="/assets/styles/nhsforms.css" rel="stylesheet">
 
@@ -21,16 +23,12 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
                 integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
                 crossorigin="anonymous"></script>
-
-
     </head>
 
     <body class="text-center form-nhs">
         <div class="form-nhs">
             <div th:include="home-initial :: categories"></div>
 
-
-            <<<<<<< HEAD
         </div>
         <br>
         <h1 class="h3 mb-3 font-weight-normal contents">Your last Doctor request result:</h1>
@@ -71,46 +69,5 @@
 
         <br>
         <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
-        =======
-        </div>
-        <br>
-        <h1 class="h3 mb-3 font-weight-normal contents">Your last Doctor request result:</h1>
-        <br>
-        <table class="table contents">
-            <thead>
-                <tr>
-                    <th>CNP</th>
-                    <th>EMAIL</th>
-                    <th>FIRST NAME</th>
-                    <th>LAST NAME</th>
-                    <th>MEDICAL LICENSE</th>
-                    <th>PHONE NUMBER</th>
-                    <th>SPECIALTIES</th>
-                    <th>TITLE</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td th:text="${doctor.cnp}"></td>
-                    <td th:text="${doctor.email}"></td>
-                    <td th:text="${doctor.firstName}"></td>
-                    <td th:text="${doctor.lastName}"></td>
-                    <td th:text="${doctor.licenseNo}"></td>
-                    <td th:text="${doctor.phoneNoRo}"></td>
-                    <td th:text="${doctor.specialties}"></td>
-                    <td th:text="${doctor.title}"></td>
-                </tr>
-            </tbody>
-        </table>
-        <br>
-        <a class="btn btn-lg btn-primary btn-block form-nhs " style="padding : 0.5rem 1rem" href="/home-initial">Clear
-            Result</a>
-        <br>
-        <a href="/logout" class="btn btn-md btn-danger btn-block"
-           style="width: 50%; margin-left:25%; margin-right: 25% ">Logout</a>
-        <br>
-        <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
-        >>>>>>> exception
-
     </body>
 </html>
